@@ -26,7 +26,11 @@
   const potOf = id => D.potensi.find(p => p.id === id).full;
   const sumP = t => Object.values(t.p).reduce((a, b) => a + b, 0);
   const tTotal = D.targets.reduce((s, t) => s + sumP(t), 0);
-  const top20 = D.targets.slice(0, 20).reduce((s, t) => s + sumP(t), 0) / tTotal;
+  const PILOT_N = 20, SKENARIO = 0.3;                    // pilot = 20 pelanggan teratas di bagian 6
+  const pilot = D.targets.slice(0, PILOT_N);
+  const pilotSet = new Set(pilot.map(t => t.n));
+  const pilotFull = pilot.reduce((s, t) => s + sumP(t), 0);
+  const top20 = pilotFull / tTotal;
   const seg = Object.fromEntries(D.segmen.map(s => [s.k, s]));
   const aguBaru = D.otak.agu_baru;
 
@@ -55,6 +59,11 @@
     pot1: rp(potOf(1)), pot2: rp(potOf(2)), pot3: rp(potOf(3)),
     pot_full: rp(potFull), pot_full_bln: rp(potFull) + ' per bulan', pot_pct: pct(potFull / D.meta.omzet_bulan, 1),
     top20: pct(top20), target_n: num(D.targets.length),
+    otak_turun_abs: rp(byM.Agu.otak - byM.Sep.otak),
+    pilot_n: num(PILOT_N), pilot_rest: num(D.targets.length - PILOT_N),
+    pilot_full: rp(pilotFull), pilot_30: rp(pilotFull * SKENARIO),
+    pilot_multi: num(pilot.filter(t => Object.keys(t.p).length > 1).length),
+    pilot_lift: pct(pilotFull * SKENARIO / pilot.reduce((s, t) => s + t.pm, 0), 1),
   };
   document.querySelectorAll('[data-b]').forEach(e => {
     const k = e.dataset.b;
@@ -215,7 +224,7 @@
     // area peluang (kiri atas)
     el('rect', { x: x(0), y: y(1), width: x(0.5) - x(0), height: y(0.7) - y(1), rx: 6, style: 'fill:var(--accent-wash)' }, svg);
     el('text', { x: x(0) + 8, y: y(1) + 16, class: 'lbl-ink', style: 'font-size:12px', text: 'Peluang: sering dibeli ulang,' }, svg);
-    el('text', { x: x(0) + 8, y: y(1) + 31, class: 'lbl-ink', style: 'font-size:12px', text: 'belum merata' }, svg);
+    el('text', { x: x(0) + 8, y: y(1) + 33, class: 'lbl-ink', style: 'font-size:12px', text: 'belum merata' }, svg);
     const ax = el('g', { class: 'ax' }, svg);
     [0, .25, .5, .75, 1].forEach(v => {
       el('line', { x1: x(v), x2: x(v), y1: m.t, y2: m.t + ph, style: 'stroke:var(--grid)', 'stroke-width': 1 }, ax);
@@ -226,7 +235,7 @@
       el('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', text: pct(v) }, ax);
     });
     el('text', { x: m.l + pw / 2, y: H - 6, 'text-anchor': 'middle', class: 'tick', text: 'Pelanggan rutin yang membeli →' }, ax);
-    el('text', { x: 12, y: m.t + ph / 2, 'text-anchor': 'middle', class: 'tick', transform: `rotate(-90 12 ${m.t + ph / 2})`, text: 'Pembeli yang membeli lagi →' }, ax);
+    el('text', { x: 16, y: m.t + ph / 2, 'text-anchor': 'middle', class: 'tick', transform: `rotate(-90 16 ${m.t + ph / 2})`, text: 'Pembeli yang membeli lagi →' }, ax);
     const pts = [...D.types].sort((a, b) => (a.j === 'Es Krim') - (b.j === 'Es Krim'));
     pts.forEach(t => {
       const hl = t.j === 'Es Krim', cx = x(t.pen), cy = y(t.rep), g = el('g', {}, svg);
@@ -299,13 +308,16 @@
   const NAMA_P = { 1: 'Coba Es Krim', 2: 'Paket Otak-Otak + Olahan Ikan', 3: 'Genapkan ke Dus' };
   let rate = 0.3;
   function drawC5(box) {
-    const W = Math.max(280, box.clientWidth), rowH = 58, H = D.potensi.length * rowH, svg = svgIn(box, W, H);
+    // layar sempit: nilai pindah ke bawah batang agar tidak menabrak nama program
+    const W = Math.max(280, box.clientWidth), narrow = W < 460, rowH = narrow ? 76 : 58;
+    const H = D.potensi.length * rowH, svg = svgIn(box, W, H);
     const max = Math.max(...D.potensi.map(p => p.full));
     D.potensi.forEach((p, i) => {
       const y0 = i * rowH, g = el('g', {}, svg), wf = p.full / max * W, ws = wf * rate;
       el('rect', { class: 'hit', x: 0, y: y0, width: W, height: rowH - 6, style: 'fill:transparent' }, g);
       el('text', { x: 0, y: y0 + 15, class: 'lbl-ink', text: `${p.id} · ${NAMA_P[p.id]}` }, g);
-      el('text', { x: W, y: y0 + 15, 'text-anchor': 'end', class: 'lbl-2', text: `${rp(p.full * rate)} dari ${rp(p.full)}` }, g);
+      el('text', narrow ? { x: 0, y: y0 + 62, class: 'lbl-2', text: `${rp(p.full * rate)} dari ${rp(p.full)}` }
+        : { x: W, y: y0 + 15, 'text-anchor': 'end', class: 'lbl-2', text: `${rp(p.full * rate)} dari ${rp(p.full)}` }, g);
       el('path', { d: rowPath(0, y0 + 24, wf, 20), style: fill('var(--accent-soft)') }, g);
       el('path', { d: rowPath(0, y0 + 24, ws, 20), style: fill('var(--accent)') }, g);
       hover(g, svg, () => ({
@@ -345,7 +357,10 @@
     shown.forEach((t, i) => {
       const tr = document.createElement('tr');
       const td = (txt, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; if (txt != null) c.textContent = txt; tr.appendChild(c); return c; };
-      td(String(i + 1), 'rank'); td(t.n, 'name'); td(rp(t.pm), 'n hide-sm'); td(`${t.m} / 6`, 'n hide-sm');
+      td(String(i + 1), 'rank');
+      const nc = td(t.n, 'name');
+      if (pilotSet.has(t.n)) { const s = document.createElement('span'); s.className = 'pilot-tag'; s.textContent = 'pilot'; nc.appendChild(s); }
+      td(rp(t.pm), 'n hide-sm'); td(`${t.m} / 6`, 'n hide-sm');
       const pc = td(null);
       Object.keys(t.p).forEach(k => { const s = document.createElement('span'); s.className = 'pill'; s.textContent = PILL[k]; pc.appendChild(s); });
       const vc = td(null, 'n'), wrap = document.createElement('div'); wrap.className = 'bar-cell';
@@ -388,10 +403,48 @@
 
   /* ---------------- Navigasi aktif ---------------- */
   const links = [...document.querySelectorAll('.nav a')];
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
-    }), { rootMargin: '-40% 0px -55% 0px' });
-    document.querySelectorAll('section.story').forEach(s => io.observe(s));
+  const secs = [...document.querySelectorAll('section.story')];
+  const pager = document.getElementById('pager'), pagerTxt = document.getElementById('pagerTxt');
+  // Bagian yang sedang dibaca: bagian terakhir yang judulnya sudah melewati 45% tinggi layar
+  const current = () => {
+    let idx = -1;
+    secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= innerHeight * 0.45) idx = i; });
+    return idx;                                          // -1 = masih di pembuka
+  };
+  function syncNav() {
+    const i = current();
+    links.forEach(a => a.classList.toggle('on', i >= 0 && a.getAttribute('href') === '#' + secs[i].id));
+    if (pagerTxt) pagerTxt.textContent = i < 0 ? `Pembuka · ${secs.length} bagian` : `Bagian ${i + 1} dari ${secs.length}`;
+  }
+  let navRaf = 0;
+  addEventListener('scroll', () => { cancelAnimationFrame(navRaf); navRaf = requestAnimationFrame(syncNav); }, { passive: true });
+  syncNav();
+
+  /* ---------------- Mode presentasi: pindah bagian dengan keyboard / clicker ----------------
+   * → atau PageDown = bagian berikutnya, ← atau PageUp = bagian sebelumnya, Home = pembuka. */
+  let navTarget = null, navTime = 0;
+  function go(step) {
+    // tekan beruntun saat halaman masih bergulir: lanjutkan dari tujuan sebelumnya
+    const busy = navTarget !== null && performance.now() - navTime < 800;
+    const cur = busy ? navTarget : current();
+    // ← di tengah bagian yang panjang: kembali dulu ke awal bagian itu
+    let i = !busy && step < 0 && cur >= 0 && secs[cur].getBoundingClientRect().top < 40 ? cur : cur + step;
+    i = Math.max(-1, Math.min(secs.length - 1, i));
+    navTarget = i; navTime = performance.now();
+    hideTip();
+    if (i < 0) scrollTo({ top: 0 });
+    else if (i < secs.length) secs[i].scrollIntoView();
+  }
+  addEventListener('keydown', e => {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    const t = e.target;
+    if (t instanceof Element && (t.matches('input, textarea, select') || t.isContentEditable)) return;
+    const map = { ArrowRight: 1, PageDown: 1, ArrowLeft: -1, PageUp: -1 };
+    if (e.key in map) { e.preventDefault(); go(map[e.key]); }
+    else if (e.key === 'Home') { e.preventDefault(); scrollTo({ top: 0 }); }
+  });
+  if (pager) {
+    pager.querySelector('[data-go="-1"]').addEventListener('click', () => go(-1));
+    pager.querySelector('[data-go="1"]').addEventListener('click', () => go(1));
   }
 })();

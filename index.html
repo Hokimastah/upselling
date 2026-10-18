@@ -6,7 +6,7 @@
   <title>Peluang Upselling Frozen Food</title>
   <meta name="description" content="Dashboard analisis penjualan frozen food April–September 2020: tiga ide upselling untuk pelanggan rutin, disusun untuk Divisi Pemasaran.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a78d6'/%3E%3Cpath d='M8 22h4v-6H8zm6 0h4V10h-4zm6 0h4v-9h-4z' fill='%23fff'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="assets/style.css?v=1">
+  <link rel="stylesheet" href="dashboard/assets/style.css?v=4">
 </head>
 <body>
 
@@ -20,7 +20,7 @@
       <a href="#s4">4 Program</a>
       <a href="#s5">5 Potensi</a>
       <a href="#s6">6 Target</a>
-      <a href="#s7">7 Permintaan</a>
+      <a href="#s7">7 Keputusan</a>
     </nav>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="Ganti tema terang/gelap">Tema</button>
   </div>
@@ -36,7 +36,7 @@
       dan pelanggan baru hanya menyumbang <b data-b="baru_share">12%</b> omzet sejak Mei.
       Cara tercepat untuk tumbuh adalah <span class="key">menjual lebih banyak ke <span data-b="rutin_n">98</span> pelanggan rutin</span>
       lewat tiga program upselling, dengan potensi tambahan hingga <b data-b="pot_full_bln">Rp24,6 jt per bulan</b>.
-      Kami meminta persetujuan Pemasaran untuk <b>pilot 3 bulan</b>.
+      Kami meminta persetujuan Pemasaran untuk <b>pilot 3 bulan pada <span data-b="pilot_n">20</span> pelanggan prioritas</b>.
     </p>
 
     <div class="kpis">
@@ -66,7 +66,7 @@
         <li><a href="#s4">Tiga program upselling</a></li>
         <li><a href="#s5">Berapa potensinya</a></li>
         <li><a href="#s6">Siapa yang dihubungi lebih dulu</a></li>
-        <li><a href="#s7">Yang kami minta dari Pemasaran</a></li>
+        <li><a href="#s7">Keputusan: pilot 3 bulan untuk 20 pelanggan prioritas</a></li>
       </ol>
     </nav>
   </div>
@@ -140,7 +140,7 @@
         <div class="card-head">
           <div>
             <h3>Jenis produk: seberapa merata vs. seberapa sering dibeli ulang</h3>
-            <p class="cap">di antara <span data-b="rutin_n">98</span> pelanggan rutin · setiap titik = satu jenis produk</p>
+            <p class="cap">di antara <span data-b="rutin_n">98</span> pelanggan rutin · setiap titik = satu jenis produk · makin ke kanan = makin banyak yang membeli, makin ke atas = makin sering dibeli lagi</p>
           </div>
           <button class="tbl-toggle" data-for="c3" type="button">Lihat tabel</button>
         </div>
@@ -259,39 +259,59 @@
     </div>
   </section>
 
-  <!-- ===================== 7. Call to action ===================== -->
+  <!-- ===================== 7. Keputusan ===================== -->
   <section class="story wrap" id="s7">
     <div class="sec-head">
       <p class="sec-no">7 · Keputusan</p>
-      <h2 class="title">Yang kami minta dari Divisi Pemasaran</h2>
+      <h2 class="title">Keputusan hari ini: setujui pilot 3 bulan untuk <span data-b="pilot_n">20</span> pelanggan prioritas.</h2>
     </div>
-    <div class="asks">
-      <div class="card ask">
-        <h3>Setujui pilot 3 bulan</h3>
-        <p>Jalankan ketiga program untuk pelanggan target, dimulai dari 20 pelanggan teratas di bagian 6.</p>
+
+    <div class="decide">
+      <div class="card decision">
+        <p class="decision-lbl">Yang kami minta dari Divisi Pemasaran</p>
+        <p class="decision-ask">Setujui pilot 3 bulan</p>
+        <p class="decision-sub">Untuk <b><span data-b="pilot_n">20</span> pelanggan teratas</b> di bagian 6. Mereka memegang <b data-b="top20">64%</b> potensi
+          (<span data-b="pilot_full">Rp15,8 jt</span> / bulan), dan <span data-b="pilot_multi">14</span> di antaranya cocok untuk lebih dari satu program.</p>
+        <p class="decision-lbl" style="margin-top:18px">Yang perlu disiapkan Pemasaran</p>
+        <ol class="prep">
+          <li><b>Coba Es Krim</b>: harga perkenalan pail 8 L pertama</li>
+          <li><b>Paket Otak-Otak + Olahan Ikan</b>: harga paket dengan potongan kecil</li>
+          <li><b>Genapkan ke Dus</b>: harga atau bonus untuk pesanan genap 1 dus</li>
+        </ol>
+        <p class="note">Batas risiko: potongan hanya berlaku untuk produk atau dus <i>tambahan</i>, bukan untuk pembelian yang sudah rutin.</p>
       </div>
-      <div class="card ask">
-        <h3>Siapkan penawarannya</h3>
-        <ul>
-          <li>Harga perkenalan es krim pail 8 L</li>
-          <li>Paket Otak-Otak + Bakso Ikan</li>
-          <li>Harga/bonus untuk pesanan genap 1 dus</li>
-        </ul>
-      </div>
-      <div class="card ask">
-        <h3>Ukur dengan grup pembanding</h3>
-        <p>Bagi pelanggan target secara acak: separuh mendapat penawaran, separuh tidak. Pola di data ini adalah hubungan, belum tentu sebab-akibat. Grup pembanding membuktikan dampaknya.</p>
+
+      <div class="card stakes">
+        <p class="decision-lbl">Yang dipertaruhkan</p>
+        <div class="stake alert">
+          <b>Jika tidak bertindak</b>
+          <p>Omzet tetap bergantung pada Otak-Otak (<span data-b="otak_share">22%</span> omzet), yang turun <span data-b="otak_turun_abs">Rp163 jt</span> hanya dalam satu bulan.</p>
+        </div>
+        <div class="stake ok">
+          <b>Jika pilot berhasil</b>
+          <p>Tambahan ±<span data-b="pilot_30">Rp4,7 jt</span> per bulan dari <span data-b="pilot_n">20</span> pelanggan (skenario 30%), lalu program diperluas ke <span data-b="pilot_rest">69</span> pelanggan target lainnya. Potensi totalnya hingga <span data-b="pot_full">Rp24,6 jt</span> per bulan.</p>
+        </div>
       </div>
     </div>
 
     <div class="card" style="margin-top:16px">
-      <h3>Rencana & ukuran keberhasilan</h3>
+      <h3>Cara kita menilai pilot</h3>
       <div class="timeline">
-        <div class="step on"><b>Minggu 1–2</b><p>Pemasaran menyiapkan mekanisme dan materi; tim data membagi grup penawaran dan pembanding.</p></div>
-        <div class="step on"><b>Bulan 1–3</b><p>Sales menawarkan program saat kunjungan rutin; tim data memantau tiap bulan.</p></div>
-        <div class="step on"><b>Akhir bulan 3</b><p>Evaluasi bersama: lanjutkan, ubah, atau hentikan per program.</p></div>
+        <div class="step on"><b>Minggu 1–2 · Siapkan</b><p>Pemasaran menyiapkan ketiga penawaran. Tim data menyiapkan laporan pantauan bulanan.</p></div>
+        <div class="step on"><b>Bulan 1–3 · Jalankan</b><p>Penawaran diberikan ke <span data-b="pilot_n">20</span> pelanggan pilot. <span data-b="pilot_rest">69</span> pelanggan target lain belum ditawari dan menjadi <b>pembanding</b>.</p></div>
+        <div class="step on"><b>Akhir bulan 3 · Putuskan</b><p>Program diperluas bila kedua kriteria di bawah tercapai. Bila tidak, program diubah atau dihentikan.</p></div>
       </div>
-      <p style="margin:16px 0 0"><b>Indikator yang dipantau:</b> % target yang membeli produk/dus baru · belanja per pelanggan per bulan dibanding grup pembanding · porsi Otak-Otak terhadap omzet.</p>
+      <div class="criteria">
+        <div class="crit">
+          <p class="crit-val">≥ 30%</p>
+          <p>pelanggan pilot membeli minimal satu penawaran (≥ 6 dari <span data-b="pilot_n">20</span>)</p>
+        </div>
+        <div class="crit">
+          <p class="crit-val">≥ <span data-b="pilot_30">Rp4,7 jt</span><small> / bulan</small></p>
+          <p>tambahan belanja pelanggan pilot dibanding pembanding, ≈ <span data-b="pilot_lift">1,5%</span> dari belanja mereka saat ini</p>
+        </div>
+      </div>
+      <p class="note" style="margin:12px 0 0">Pembanding diperlukan karena pola di data ini menunjukkan hubungan, belum tentu sebab-akibat.</p>
     </div>
 
     <div class="recap">
@@ -300,7 +320,7 @@
         <li>Omzet naik-turun mengikuti Otak-Otak (<span data-b="otak_share">22%</span> omzet), dan pelanggan baru hanya menyumbang <span data-b="baru_share">12%</span>.</li>
         <li><span data-b="rutin_n">98</span> pelanggan rutin memegang <span data-b="rutin_share">87%</span> omzet. Merekalah sasaran upselling.</li>
         <li>Tiga program (Coba Es Krim, Paket Otak-Otak + Olahan Ikan, Genapkan ke Dus) berpotensi menambah hingga <span class="key" data-b="pot_full_bln">Rp24,6 jt per bulan</span>.</li>
-        <li><b>Keputusan yang diminta:</b> setujui pilot 3 bulan dengan grup pembanding.</li>
+        <li><b>Keputusan yang diminta:</b> setujui pilot 3 bulan untuk <span data-b="pilot_n">20</span> pelanggan prioritas.</li>
       </ol>
     </div>
   </section>
@@ -308,7 +328,8 @@
 
 <footer>
   <div class="wrap">
-    <h2>Catatan data &amp; metode</h2>
+    <details class="appendix">
+    <summary>Lampiran: catatan data &amp; metode</summary>
     <ul>
       <li><b>Sumber:</b> 6 file Excel laporan penjualan April–September 2020. Hanya sheet laporan lengkap (diawali “_”) yang dipakai agar tidak terhitung dua kali dengan sheet per merek; total setiap file dicocokkan dengan baris total di Excel. Hasilnya <span data-b="baris">6.778</span> baris, <span data-b="sku">268</span> produk, <span data-b="pelanggan">183</span> pelanggan.</li>
       <li><b>Nama pelanggan</b> dibersihkan dari kode awalan (“F - ”, “C - ”, “AL - ”, …) dan tulisan “(MITRAKU)”, sehingga misalnya “C - ADEK FROZEN” dan “ADEK FROZEN” dihitung satu pelanggan. Pembeli “CASH” tidak dihitung sebagai pelanggan rutin.</li>
@@ -317,15 +338,22 @@
       <li><b>Potensi Program 1:</b> <span data-b="p1_porsi">4,2%</span> × belanja bulanan pelanggan target; 4,2% adalah median porsi es krim pada <span data-b="p1_campur">20</span> toko rutin yang menjual es krim bersama produk lain.</li>
       <li><b>Potensi Program 2:</b> <span data-b="p2_asumsi">10%</span> × belanja Otak-Otak bulanan pelanggan target (asumsi konservatif; median pelanggan lain <span data-b="p2_peer_pct">91%</span>). Target = pembeli Otak-Otak rutin yang belanja bakso ikan/olahan ikan lainnya &lt; 10% dari belanja Otak-Otaknya.</li>
       <li><b>Potensi Program 3:</b> (isi dus − jumlah pack yang dibeli dalam sebulan) × harga pack yang dibayar, untuk pembelian eceran 50–99% isi dus, dibagi 6 bulan. Angka ini sebelum biaya diskon/bonus dus.</li>
-      <li>Semua potensi adalah <b>perkiraan</b>, bukan target penjualan. Angka dihitung ulang dengan <code>analisis/build_data.py</code>.</li>
+      <li>Semua potensi adalah <b>perkiraan</b>, bukan target penjualan. Angka dihitung ulang dengan <code>dashboard/analisis/build_data.py</code>.</li>
     </ul>
+    </details>
     <p class="small" style="margin-top:16px">Disusun oleh Tim Data Analyst · Kerangka penyajian: <i>Storytelling with Data</i> (Cole Nussbaumer Knaflic): konteks → visual yang tepat → buang clutter → fokuskan perhatian → ajakan bertindak.</p>
   </div>
 </footer>
 
+<div class="pager" id="pager" aria-label="Pindah bagian" title="Pindah bagian: tombol ← → atau PageUp/PageDown">
+  <button type="button" data-go="-1" aria-label="Bagian sebelumnya">‹</button>
+  <span id="pagerTxt">Pembuka · 7 bagian</span>
+  <button type="button" data-go="1" aria-label="Bagian berikutnya">›</button>
+</div>
+
 <div class="tip" id="tip" role="status" aria-live="polite"></div>
 
-<script src="assets/data.js?v=1"></script>
-<script src="assets/app.js?v=1"></script>
+<script src="dashboard/assets/data.js?v=2"></script>
+<script src="dashboard/assets/app.js?v=7"></script>
 </body>
 </html>

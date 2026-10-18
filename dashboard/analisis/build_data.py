@@ -1,11 +1,12 @@
 """
-Membangun assets/data.js untuk dashboard "Peluang Upselling Frozen Food".
+Membangun dashboard/assets/data.js untuk dashboard "Peluang Upselling Frozen Food"
+(halamannya: index.html di root repository).
 
 Semua angka di dashboard dihitung di sini, langsung dari 6 file Excel mentah
-(April-September 2020). Jalankan ulang setiap kali data berubah:
+(April-September 2020). Jalankan ulang dari root repository setiap kali data berubah:
 
-    python analisis/build_data.py                      # dataset di ../../dataset
-    python analisis/build_data.py --dataset "D:/data"  # lokasi dataset lain
+    python dashboard/analisis/build_data.py                      # dataset di ./dataset
+    python dashboard/analisis/build_data.py --dataset "D:/data"  # lokasi dataset lain
 
 Aturan utama:
 - Hanya sheet laporan lengkap (nama diawali "_") yang dipakai, agar transaksi

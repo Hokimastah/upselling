@@ -283,7 +283,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 @media (max-width: 760px) { .timeline { grid-template-columns: minmax(0, 1fr); } }
 .step { border-top: 3px solid var(--grid); padding: 12px 16px 0 0; }
 .step.on { border-top-color: var(--accent); }
-.step b { display: block; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.step > b { display: block; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
 .step p { margin: 4px 0 0; font-size: 14.5px; }
 
 .recap { background: var(--ink); color: var(--page); border-radius: 16px; padding: 28px; margin-top: 20px; }
@@ -304,3 +304,58 @@ footer code { font-size: 13px; background: var(--surface-2); padding: 1px 5px; b
   body { background: #fff; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* ============ Bagian 7: keputusan ============ */
+.decide { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
+@media (max-width: 900px) { .decide { grid-template-columns: minmax(0, 1fr); } }
+.decision { border: 1px solid var(--accent); box-shadow: inset 4px 0 0 var(--accent), var(--shadow); padding: 24px 26px; }
+.decision-lbl { margin: 0 0 6px; font-size: 12.5px; font-weight: 650; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.decision-ask { margin: 0; font-size: clamp(28px, 3.4vw, 38px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.decision-sub { margin: 10px 0 0; font-size: 16px; color: var(--ink-2); }
+.decision-sub b { color: var(--ink); }
+.prep { margin: 0; padding-left: 22px; display: grid; gap: 6px; font-size: 15.5px; }
+.decision .note, .card .note { font-size: 13px; color: var(--muted); margin: 14px 0 0; }
+.stakes { display: flex; flex-direction: column; gap: 12px; padding: 24px 26px; }
+.stake { border-left: 3px solid var(--grid); padding: 2px 0 2px 14px; }
+.stake b { display: block; font-size: 15px; margin-bottom: 2px; }
+.stake p { margin: 0; color: var(--ink-2); font-size: 15px; }
+.stake.alert { border-left-color: var(--alert); }
+.stake.ok { border-left-color: var(--accent); }
+.criteria { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+@media (max-width: 640px) { .criteria { grid-template-columns: minmax(0, 1fr); } }
+.crit { background: var(--surface-2); border-radius: 12px; padding: 14px 16px; }
+.crit-val { margin: 0 0 4px; font-size: 26px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.15; }
+.crit-val small { font-size: 14px; font-weight: 500; color: var(--ink-2); letter-spacing: 0; }
+.crit p:last-child { margin: 0; font-size: 14px; color: var(--ink-2); }
+
+/* ============ Tag pilot di tabel target ============ */
+.pilot-tag {
+  margin-left: 8px; font-size: 11px; font-weight: 650; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--ink-2); border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; vertical-align: 1px;
+}
+
+/* ============ Lampiran metode ============ */
+.appendix summary { cursor: pointer; font-size: 16px; font-weight: 650; color: var(--ink); margin-bottom: 4px; }
+.appendix[open] summary { margin-bottom: 12px; }
+
+/* ============ Pindah bagian (mode presentasi) ============ */
+.pager {
+  position: fixed; right: 20px; bottom: 20px; z-index: 30;
+  display: flex; align-items: center; gap: 6px; padding: 5px 6px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .10); font-size: 13px; color: var(--ink-2);
+  opacity: .72; transition: opacity .15s;
+}
+.pager:hover, .pager:focus-within { opacity: 1; }
+.pager button {
+  width: 30px; height: 30px; border-radius: 50%; border: 0; background: var(--surface-2);
+  color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer;
+}
+.pager button:hover { background: var(--ink); color: var(--page); }
+.pager span { font-variant-numeric: tabular-nums; padding: 0 4px; }
+@media (max-width: 900px) { .pager { display: none; } }
+@media print { .pager { display: none; } }
+
+/* ============ Keterbacaan di proyektor: label grafik sedikit lebih besar ============ */
+.ax text, .tick { font-size: 12.5px; }
+.lbl-ink, .lbl-2 { font-size: 13.5px; }
