@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ringkasan Penjualan Frozen Food</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<style>
+/* Tema ITS: biru ITS sebagai warna utama, kuning emas ITS untuk sorotan & kejanggalan, latar putih. */
+:root{
+  --bg:#ffffff; --panel:#ffffff; --line:#e3e8f0;
+  --ink:#0b1f44; --ink-2:#44526b; --muted:#7d889c;
+  --grid:#eef1f6; --axis:#cfd6e2;
+  --its:#013880; --its-2:#0a5bb5; --gold:#f5b800;
+  --accent:#013880; --accent-mid:#8fb0dd; --accent-soft:#eef3fb; --dim:#dde3ec;
+  --warn:#f5b800; --warn-soft:#fff7dc; --warn-ink:#8a5a00;
+  --up:#0f8f4f; --down:#d63636;
+  --head:"Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font:"DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5}
+h1,h2,h3,.val,.big{font-family:var(--head)}
+
+/* hero */
+.hero{background:#fff;color:var(--ink);padding:0 24px 8px;border-top:6px solid var(--its);box-shadow:inset 0 6px 0 0 var(--gold)}
+.hero-in{padding-top:28px}
+.hero-in{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px}
+.kicker{display:inline-block;margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--warn-soft);color:var(--its);padding:4px 10px;border-radius:999px}
+h1{color:var(--its);margin:0;font-size:clamp(22px,2.8vw,32px);font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.hero .sub{margin:8px 0 0;font-size:14.5px;color:var(--ink-2);max-width:620px}
+.filter{display:flex;flex-wrap:wrap;gap:2px;padding:4px;background:var(--accent-soft);border:1px solid var(--line);border-radius:999px}
+.filter button{font:inherit;font-size:13px;font-weight:600;color:var(--ink-2);background:transparent;border:0;border-radius:999px;padding:7px 13px;cursor:pointer}
+.filter button:hover{color:var(--its);background:#fff}
+.filter button[aria-checked="true"]{background:var(--its);color:#fff;box-shadow:inset 0 -3px 0 var(--gold)}
+.filter button:focus-visible,[tabindex]:focus-visible,.atile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.filter-lab{font-size:12px;color:var(--muted);margin:0 0 6px 6px}
+
+.wrap{max-width:1280px;margin:16px auto 0;padding:0 24px 40px;display:flex;flex-direction:column;gap:16px}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:2px;min-width:0;border-top:3px solid var(--its)}
+.kpi .lab{font-size:13px;color:var(--ink-2);font-weight:500}
+.kpi .val{font-size:28px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+.kpi .meta{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 8px}
+.delta{font-weight:700}.delta.up{color:var(--up)}.delta.down{color:var(--down)}
+
+/* insight */
+.sec-title{display:flex;align-items:baseline;gap:10px;margin:10px 0 -2px}
+.sec-title h2{margin:0;font-size:18px;font-weight:600}
+.sec-title p{margin:0;color:var(--muted);font-size:13px}
+.insight{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.insight div{background:var(--accent-soft);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.insight .ic{flex:none;min-width:34px;height:30px;padding:0 7px;border-radius:9px;background:var(--gold);color:var(--its);display:grid;place-items:center;font-family:var(--head);font-weight:600;font-size:14px}
+.insight p{margin:0;font-size:13.5px;color:var(--ink-2)}
+.insight b{color:var(--ink)}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;min-width:0;display:flex;flex-direction:column;gap:12px}
+.c12{grid-column:span 12}.c8{grid-column:span 8}.c6{grid-column:span 6}.c4{grid-column:span 4}
+.card h3{margin:0;font-size:15px;font-weight:600}
+.card .note{margin:3px 0 0;font-size:13px;color:var(--muted)}
+.card header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.chart{position:relative;min-width:0}
+.chart svg{display:block;width:100%;overflow:visible}
+.chart text{font-family:var(--font);fill:var(--muted);font-size:11px}
+.chart .lbl{fill:var(--ink-2);font-weight:500}
+.chart .lbl-strong{fill:var(--ink);font-weight:700;font-size:12px}
+.chart .lbl-warn{fill:var(--warn-ink);font-weight:700;font-size:11.5px}
+.chart .gridline{stroke:var(--grid);stroke-width:1}
+.chart .baseline{stroke:var(--axis);stroke-width:1}
+.is-hot{filter:brightness(1.08)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.legend .ln{width:14px;height:0;border-top:2px solid var(--warn);border-radius:0}
+
+/* ranked lists */
+.rank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.rank li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:4px 8px;align-items:baseline}
+.rank .no{font-family:var(--head);font-size:12px;color:var(--accent);font-weight:600}
+.rank .nm{font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank .nm small{color:var(--muted);font-size:12px;margin-left:5px}
+.rank .v{font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.rank .pc{font-size:12px;color:var(--muted);font-weight:500;margin-left:6px}
+.rank .bar{grid-column:2/4;height:7px;border-radius:4px;background:var(--grid);position:relative;overflow:hidden}
+.rank .bar i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:4px}
+.rank.nonum li{grid-template-columns:minmax(0,1fr) auto}
+.rank.nonum .bar{grid-column:1/3}
+
+/* kejanggalan */
+.sec-title.warn h2{color:var(--warn-ink)}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--warn-ink);background:var(--warn-soft);border-radius:999px;padding:3px 9px}
+.atiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.atile{all:unset;box-sizing:border-box;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.atile:hover{border-color:var(--warn)}
+.atile[aria-selected="true"]{border-color:var(--warn);background:var(--warn-soft);box-shadow:inset 0 0 0 1px var(--warn)}
+.atile .t{font-size:13px;font-weight:600;color:var(--ink-2);display:flex;gap:6px;align-items:center}
+.atile .t::before{content:"!";flex:none;width:18px;height:18px;border-radius:50%;background:var(--warn);color:var(--its);font-size:11px;font-weight:800;display:grid;place-items:center}
+.atile .big{font-size:24px;font-weight:700;line-height:1.2}
+.atile .big small{font-family:var(--font);font-size:13px;font-weight:500;color:var(--muted);margin-left:4px}
+.atile .d{font-size:12.5px;color:var(--muted)}
+.atile .d b{color:var(--warn-ink)}
+.why{margin:0;font-size:13.5px;color:var(--ink-2);background:var(--warn-soft);border-radius:12px;padding:11px 14px}
+.why b{color:var(--ink)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:720px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;font-weight:600;color:var(--muted);background:var(--bg)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+td .pill{font-size:11.5px;font-weight:600;color:var(--warn-ink);background:var(--warn-soft);border-radius:999px;padding:2px 8px}
+.more{align-self:flex-start;font:inherit;font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-soft);border:0;border-radius:999px;padding:7px 14px;cursor:pointer}
+.empty{padding:18px;color:var(--muted);text-align:center}
+
+.notes{font-size:12.5px;color:var(--muted);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:4px 24px;padding-top:4px}
+.notes p{margin:0}.notes b{color:var(--ink-2)}
+
+.tt{position:fixed;z-index:20;pointer-events:none;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:9px 12px;box-shadow:0 10px 28px rgba(30,20,90,.16);font-size:12.5px;min-width:160px;max-width:300px}
+.tt-title{font-weight:700;margin-bottom:4px;color:var(--ink-2);font-size:12px}
+.tt-row{display:flex;align-items:center;gap:7px;line-height:1.6}
+.tt-key{width:10px;height:10px;border-radius:3px;flex:none}
+.tt-val{font-weight:700;font-variant-numeric:tabular-nums}
+.tt-lab{color:var(--muted)}
+
+@media (max-width:1000px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.insight{grid-template-columns:1fr}.c8,.c6,.c4{grid-column:span 12}}
+@media (max-width:600px){.hero{padding-inline:16px}.wrap{padding-inline:16px}.kpi .val{font-size:23px}.atiles{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){.rank .bar i{transition:width .35s ease}}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-in">
+    <div>
+      <span class="kicker">Dashboard penjualan · Distributor frozen food</span>
+      <h1>Penjualan Frozen Food, April–September 2020</h1>
+      <p class="sub" id="sub">—</p>
+    </div>
+    <div>
+      <p class="filter-lab">Mau lihat bulan apa?</p>
+      <div class="filter" role="radiogroup" aria-label="Periode" id="filter"></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="kpis" aria-label="Angka utama">
+    <div class="kpi"><span class="lab">Total uang masuk (omzet)</span><span class="val" id="k-omzet">—</span><span class="meta" id="k-omzet-m"></span></div>
+    <div class="kpi"><span class="lab">Jumlah transaksi</span><span class="val" id="k-trx">—</span><span class="meta" id="k-trx-m"></span></div>
+    <div class="kpi"><span class="lab">Pelanggan yang belanja</span><span class="val" id="k-cust">—</span><span class="meta" id="k-cust-m"></span></div>
+    <div class="kpi"><span class="lab">Rata-rata sekali belanja</span><span class="val" id="k-avg">—</span><span class="meta" id="k-avg-m"></span></div>
+  </section>
+
+  <div class="sec-title"><h2>Yang perlu kamu tahu</h2><p>Kesimpulan singkat dari angka-angka di bawah</p></div>
+  <section class="insight" id="insight"></section>
+
+  <div class="sec-title"><h2>Gambaran penjualan</h2></div>
+  <section class="grid">
+    <article class="card c8">
+      <header><div><h3>Bulan mana yang paling laris?</h3><p class="note">Klik batang untuk melihat bulan itu saja · angka hijau/merah = naik/turun dari bulan sebelumnya</p></div></header>
+      <div class="chart" id="ch-bulanan"></div>
+    </article>
+    <article class="card c4">
+      <header><div><h3>Jenis produk apa yang paling laku?</h3><p class="note" id="kat-note">—</p></div></header>
+      <ol class="rank nonum" id="rk-kat"></ol>
+    </article>
+
+    <article class="card c4">
+      <header><div><h3>Produk mana yang paling penting?</h3><p class="note" id="par-note">—</p></div></header>
+      <div class="chart" id="ch-pareto"></div>
+    </article>
+    <article class="card c4">
+      <header><div><h3>Berapa pelanggan yang balik lagi?</h3><p class="note">Pelanggan lama = pernah belanja di bulan sebelumnya</p></div>
+        <div class="legend"><span><i style="background:var(--accent)"></i>Lama (balik lagi)</span><span><i style="background:var(--accent-mid)"></i>Baru</span></div></header>
+      <div class="chart" id="ch-cohort"></div>
+    </article>
+    <article class="card c4">
+      <header><div><h3>Hari apa paling ramai?</h3><p class="note">Rata-rata uang masuk per hari buka · biru tua = hari tersibuk</p></div></header>
+      <div class="chart" id="ch-hari"></div>
+    </article>
+
+    <article class="card c6">
+      <header><div><h3>5 produk paling laku</h3><p class="note">Diurutkan dari uang masuk terbesar</p></div></header>
+      <ol class="rank" id="rk-produk"></ol>
+    </article>
+    <article class="card c6">
+      <header><div><h3>5 pelanggan terbesar</h3><p class="note">Diurutkan dari total belanja · jumlah transaksinya</p></div></header>
+      <ol class="rank" id="rk-pelanggan"></ol>
+    </article>
+  </section>
+
+  <div class="sec-title warn"><h2>Cek kejanggalan data</h2><p>Hal-hal yang terlihat aneh dan sebaiknya dicek ulang</p></div>
+  <section class="grid">
+    <article class="card c12">
+      <header><div><h3>Hari dengan penjualan yang tidak biasa</h3><p class="note" id="lonj-note">—</p></div>
+        <div class="legend"><span><i style="background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent-mid)"></i>Kisaran normal</span><span><i style="background:var(--dim)"></i>Hari biasa</span><span><i style="background:var(--warn)"></i>Lonjakan tidak biasa</span><span><i class="ln"></i>Batas wajar</span></div></header>
+      <div class="chart" id="ch-lonjakan"></div>
+    </article>
+    <article class="card c12">
+      <header><div><h3>Catatan transaksi yang janggal</h3><p class="note">Pilih salah satu kotak untuk melihat baris datanya</p></div><span class="badge" id="anom-total">—</span></header>
+      <div class="atiles" role="tablist" aria-label="Jenis kejanggalan" id="atiles"></div>
+      <p class="why" id="why"></p>
+      <div class="tbl-wrap"><table><thead><tr><th>Tanggal</th><th>Barang</th><th>Pelanggan</th><th class="n">Qty</th><th class="n">Harga</th><th class="n">Jumlah</th><th>Keterangan</th></tr></thead><tbody id="atbody"></tbody></table></div>
+      <button class="more" id="more" type="button" hidden></button>
+    </article>
+  </section>
+
+  <footer class="notes">
+    <p><b>Sumber data:</b> laporan penjualan dari 6 file Excel bulanan (April–September 2020). Omzet = kolom JUMLAH.</p>
+    <p><b>Transaksi</b> dihitung per baris barang, karena data tidak punya nomor nota. April adalah bulan pertama data, jadi semua pelanggan April dihitung "baru".</p>
+    <p><b>Batas wajar harian</b> memakai aturan IQR: Q3 + 1,5 × (Q3 − Q1) dari omzet semua hari buka.</p>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+const DATA = {"slices":{"all":{"kpi":{"omzet":4530330620,"trx":6778,"pelanggan":183,"hari":143,"rata_hari":31680633.706293706,"rata_trx":668387.5213927412,"median":240000.0,"sku":268,"merek":71},"kat":[{"k":"Olahan Ayam & Daging","s":"Ayam & Daging","o":1597044250},{"k":"Olahan Ikan & Seafood","s":"Ikan & Seafood","o":1414471067},{"k":"Es Krim","s":"Es Krim","o":439914500},{"k":"Kentang Goreng","s":"Kentang Goreng","o":507845000},{"k":"Dimsum, Kulit & Camilan","s":"Dimsum & Camilan","o":321095517},{"k":"Keju, Saus & Lainnya","s":"Keju, Saus & Lain","o":249960286}],"produk":[{"n":"Minaku Otak Otak 500 gr","raw":"MINAKU OTAK OTAK 500 GR X 20 PACK","b":"Minaku","o":967688500},{"n":"Okey Sosis 500 gr","raw":"OKEY SOSIS 500 GR X 20 PACK","b":"Okey","o":336460000},{"n":"Lutosa Shoestring 2,5 kg","raw":"LUTOSA SHOESTRING 2.5 KG X 4 PACK","b":"Lutosa","o":190984250},{"n":"Jofrans Nugget Ayam Hati 500 gr","raw":"JOFRANS NUGGET AYAM HATI 500 GR X 12 PAK","b":"Jofrans","o":160543500},{"n":"Okey Stick 500 gr","raw":"OKEY STICK 500 GR X 10 PACK","b":"Okey","o":156563000},{"n":"Eurial Mozzarella Cheese 4 X 2,5 kg","raw":"EURIAL MOZZARELLA CHEESE 4 X 2.5 KG","b":"Eurial","o":132080000},{"n":"Miami 8 L Neapolitan Choco Chips","raw":"MIAMI 8 LTR NEAPOLITAN CHOCO CHIPS","b":"Miami","o":128862000},{"n":"Indoeskrim 8 L Vanilla","raw":"INDOESKRIM 8 LTR VANILLA","b":"Indoeskrim","o":125015000},{"n":"Okey Sosis 1000 gr","raw":"OKEY SOSIS 1000 GR X 10 PACK","b":"Okey","o":113187500},{"n":"Miami 8 L Neapolitan","raw":"MIAMI 8 LTR NEAPOLITAN","b":"Miami","o":107252000}],"merek":[{"n":"Minaku","k":"Ikan & Seafood","o":1039869004},{"n":"Okey","k":"Ayam & Daging","o":641209000},{"n":"Jofrans","k":"Ayam & Daging","o":616165400},{"n":"Miami","k":"Es Krim","o":278353000},{"n":"Lutosa","k":"Kentang Goreng","o":254090750},{"n":"Mitraku","k":"Ikan & Seafood","o":166130888},{"n":"Indoeskrim","k":"Es Krim","o":143076000},{"n":"Eurial","k":"Keju, Saus & Lain","o":132080000},{"n":"Shifudo","k":"Ikan & Seafood","o":112620175},{"n":"Belfoods","k":"Ayam & Daging","o":106735200}],"pelanggan":[{"n":"Toko Cita Rasa Baru","o":547771782,"t":528},{"n":"Adek Frozen","o":420727170,"t":286},{"n":"Anton","o":311758150,"t":145},{"n":"Hite","o":229861080,"t":83},{"n":"Rumah Sosis","o":182693450,"t":166},{"n":"Graha Sandeni","o":163225800,"t":69},{"n":"Firdon","o":154756000,"t":25},{"n":"Pt. Dinamika Buah N.","o":139880850,"t":190},{"n":"Pak Sutarmuji","o":126400000,"t":2},{"n":"Kubang Jaya Food","o":122782500,"t":56}],"dow":[{"h":"Senin","avg":37701677.9047619,"n":21},{"h":"Selasa","avg":25310633.125,"n":24},{"h":"Rabu","avg":39405099.807692304,"n":26},{"h":"Kamis","avg":24184383.304347824,"n":23},{"h":"Jumat","avg":38412734.08695652,"n":23},{"h":"Sabtu","avg":26667755.76,"n":25},{"h":"Minggu","avg":180000.0,"n":1}]},"4":{"kpi":{"omzet":609614133,"trx":1029,"pelanggan":94,"hari":25,"rata_hari":24384565.32,"rata_trx":592433.5597667638,"median":240000.0,"sku":116,"merek":30},"kat":[{"k":"Olahan Ayam & Daging","s":"Ayam & Daging","o":240772100},{"k":"Olahan Ikan & Seafood","s":"Ikan & Seafood","o":157262403},{"k":"Es Krim","s":"Es Krim","o":28961000},{"k":"Kentang Goreng","s":"Kentang Goreng","o":96980250},{"k":"Dimsum, Kulit & Camilan","s":"Dimsum & Camilan","o":42613436},{"k":"Keju, Saus & Lainnya","s":"Keju, Saus & Lain","o":43024944}],"produk":[{"n":"Minaku Otak Otak 500 gr","raw":"MINAKU OTAK OTAK 500 GR X 20 PACK","b":"Minaku","o":64457000},{"n":"Lutosa Shoestring 2,5 kg","raw":"LUTOSA SHOESTRING 2.5 KG X 4 PACK","b":"Lutosa","o":64271750},{"n":"Okey Sosis 500 gr","raw":"OKEY SOSIS 500 GR X 20 PACK","b":"Okey","o":63481500},{"n":"Jofrans Nugget Ayam Hati 500 gr","raw":"JOFRANS NUGGET AYAM HATI 500 GR X 12 PAK","b":"Jofrans","o":36746900},{"n":"Eurial Mozzarella Cheese 4 X 2,5 kg","raw":"EURIAL MOZZARELLA CHEESE 4 X 2.5 KG","b":"Eurial","o":31270000},{"n":"Okey Stick 500 gr","raw":"OKEY STICK 500 GR X 10 PACK","b":"Okey","o":24541500},{"n":"Finna Kulit Lumpia 125 Mm","raw":"FINNA KULIT LUMPIA 125 MM X 36 PACK","b":"Finna","o":24371496},{"n":"Lutosa Shoestring 1000 gr","raw":"LUTOSA SHOESTRING 1000 GR X 10 PACK","b":"Lutosa","o":23081000},{"n":"Jofrans Nugget Ayam Reg. 500 gr","raw":"JOFRANS NUGGET AYAM REG. 500 GR X 12 PAK","b":"Jofrans","o":19864000},{"n":"Miami 8 L Neapolitan Choco Chips","raw":"MIAMI 8 LTR NEAPOLITAN CHOCO CHIPS","b":"Miami","o":14136000}],"merek":[{"n":"Okey","k":"Ayam & Daging","o":100322000},{"n":"Jofrans","k":"Ayam & Daging","o":98896900},{"n":"Lutosa","k":"Kentang Goreng","o":89612750},{"n":"Minaku","k":"Ikan & Seafood","o":78558300},{"n":"Mitraku","k":"Ikan & Seafood","o":53461178},{"n":"Eurial","k":"Keju, Saus & Lain","o":31270000},{"n":"Finna","k":"Dimsum & Camilan","o":24371496},{"n":"Mantul","k":"Ikan & Seafood","o":22249100},{"n":"Miami","k":"Es Krim","o":19751000},{"n":"Belfoods","k":"Ayam & Daging","o":17919000}],"pelanggan":[{"n":"Adek Frozen","o":91519640,"t":57},{"n":"Toko Cita Rasa Baru","o":47163040,"t":50},{"n":"Anton","o":35524500,"t":21},{"n":"Pt. Dinamika Buah N.","o":33332850,"t":42},{"n":"Graha Sandeni","o":28157400,"t":13},{"n":"Rumah Sosis","o":23864000,"t":18},{"n":"Annisa / Saiin","o":23814000,"t":22},{"n":"Hite","o":23560180,"t":8},{"n":"Firdon","o":20456000,"t":12},{"n":"Amanah Frozen","o":14032900,"t":38}],"dow":[{"h":"Senin","avg":25209862.5,"n":4},{"h":"Selasa","avg":27101667.5,"n":4},{"h":"Rabu","avg":16978587.0,"n":5},{"h":"Kamis","avg":22622540.0,"n":5},{"h":"Jumat","avg":36747356.0,"n":3},{"h":"Sabtu","avg":23030077.5,"n":4},{"h":"Minggu","avg":null,"n":0}]},"5":{"kpi":{"omzet":706718094,"trx":985,"pelanggan":88,"hari":21,"rata_hari":33653242.571428575,"rata_trx":717480.2984771574,"median":260000.0,"sku":121,"merek":31},"kat":[{"k":"Olahan Ayam & Daging","s":"Ayam & Daging","o":261560900},{"k":"Olahan Ikan & Seafood","s":"Ikan & Seafood","o":249861489},{"k":"Es Krim","s":"Es Krim","o":74151000},{"k":"Kentang Goreng","s":"Kentang Goreng","o":50490000},{"k":"Dimsum, Kulit & Camilan","s":"Dimsum & Camilan","o":26873105},{"k":"Keju, Saus & Lainnya","s":"Keju, Saus & Lain","o":43781600}],"produk":[{"n":"Minaku Otak Otak 500 gr","raw":"MINAKU OTAK OTAK 500 GR X 20 PACK","b":"Minaku","o":193195000},{"n":"Okey Sosis 500 gr","raw":"OKEY SOSIS 500 GR X 20 PACK","b":"Okey","o":74239500},{"n":"Okey Stick 500 gr","raw":"OKEY STICK 500 GR X 10 PACK","b":"Okey","o":41083500},{"n":"Julienne Shoestring 2,5 kg","raw":"JULIENNE SHOESTRING 2.5 KG X 4 PACK","b":"Julienne","o":31037000},{"n":"Miami 8 L","raw":"MIAMI 8 LTR","b":"Miami","o":30961000},{"n":"Jofrans Nugget Ayam Hati 500 gr","raw":"JOFRANS NUGGET AYAM HATI 500 GR X 12 PAK","b":"Jofrans","o":29684500},{"n":"Eurial Mozzarella Cheese 4 X 2,5 kg","raw":"EURIAL MOZZARELLA CHEESE 4 X 2.5 KG","b":"Eurial","o":22960000},{"n":"Jofrans Baso Sapi 500 gr","raw":"JOFRANS BASO SAPI 500 GR X 15 PACK","b":"Jofrans","o":14364500},{"n":"Okey Sosis 1000 gr","raw":"OKEY SOSIS 1000 GR X 10 PACK","b":"Okey","o":14095000},{"n":"Miami 8 L Neapolitan Choco Chips","raw":"MIAMI 8 LTR NEAPOLITAN CHOCO CHIPS","b":"Miami","o":13630000}],"merek":[{"n":"Minaku","k":"Ikan & Seafood","o":203787500},{"n":"Okey","k":"Ayam & Daging","o":131994000},{"n":"Jofrans","k":"Ayam & Daging","o":92854500},{"n":"Miami","k":"Es Krim","o":56591000},{"n":"Mitraku","k":"Ikan & Seafood","o":34306719},{"n":"Julienne","k":"Kentang Goreng","o":31037000},{"n":"Eurial","k":"Keju, Saus & Lain","o":22960000},{"n":"Shifudo","k":"Ikan & Seafood","o":17022270},{"n":"Lutosa","k":"Kentang Goreng","o":15973000},{"n":"Belfoods","k":"Ayam & Daging","o":15968400}],"pelanggan":[{"n":"Kubang Jaya Food","o":73779000,"t":11},{"n":"Toko Cita Rasa Baru","o":67085800,"t":46},{"n":"Anton","o":63528000,"t":18},{"n":"Hite","o":44207900,"t":12},{"n":"Adek Frozen","o":40953100,"t":27},{"n":"Firdon","o":31000000,"t":3},{"n":"Rumah Sosis","o":28725000,"t":20},{"n":"Pt. Dinamika Buah N.","o":26639000,"t":31},{"n":"Amanah Frozen","o":25395700,"t":47},{"n":"Pak H. Rafdi","o":21346000,"t":10}],"dow":[{"h":"Senin","avg":36345130.0,"n":3},{"h":"Selasa","avg":15261443.333333334,"n":3},{"h":"Rabu","avg":43514502.5,"n":4},{"h":"Kamis","avg":22385875.0,"n":2},{"h":"Jumat","avg":38397615.0,"n":4},{"h":"Sabtu","avg":35895630.8,"n":5},{"h":"Minggu","avg":null,"n":0}]},"6":{"kpi":{"omzet":772238225,"trx":1200,"pelanggan":100,"hari":24,"rata_hari":32176592.708333332,"rata_trx":643531.8541666666,"median":238000.0,"sku":144,"merek":44},"kat":[{"k":"Olahan Ayam & Daging","s":"Ayam & Daging","o":281344450},{"k":"Olahan Ikan & Seafood","s":"Ikan & Seafood","o":208589985},{"k":"Es Krim","s":"Es Krim","o":83647500},{"k":"Kentang Goreng","s":"Kentang Goreng","o":104263500},{"k":"Dimsum, Kulit & Camilan","s":"Dimsum & Camilan","o":26242500},{"k":"Keju, Saus & Lainnya","s":"Keju, Saus & Lain","o":68150290}],"produk":[{"n":"Minaku Otak Otak 500 gr","raw":"MINAKU OTAK OTAK 500 GR X 20 PACK","b":"Minaku","o":133357000},{"n":"Okey Sosis 500 gr","raw":"OKEY SOSIS 500 GR X 20 PACK","b":"Okey","o":60493000},{"n":"Lutosa Shoestring 2,5 kg","raw":"LUTOSA SHOESTRING 2.5 KG X 4 PACK","b":"Lutosa","o":48477500},{"n":"Eurial Mozzarella Cheese 4 X 2,5 kg","raw":"EURIAL MOZZARELLA CHEESE 4 X 2.5 KG","b":"Eurial","o":47920000},{"n":"Okey Stick 500 gr","raw":"OKEY STICK 500 GR X 10 PACK","b":"Okey","o":29739500},{"n":"Jofrans Nugget Ayam Hati 500 gr","raw":"JOFRANS NUGGET AYAM HATI 500 GR X 12 PAK","b":"Jofrans","o":28491800},{"n":"Miami 8 L Neapolitan Choco Chips","raw":"MIAMI 8 LTR NEAPOLITAN CHOCO CHIPS","b":"Miami","o":25735000},{"n":"Okey Sosis 1000 gr","raw":"OKEY SOSIS 1000 GR X 10 PACK","b":"Okey","o":24204000},{"n":"Indoeskrim 8 L Vanilla","raw":"INDOESKRIM 8 LTR VANILLA","b":"Indoeskrim","o":22735000},{"n":"Julienne Shoestring 2,5 kg","raw":"JULIENNE SHOESTRING 2.5 KG X 4 PACK","b":"Julienne","o":22530000}],"merek":[{"n":"Minaku","k":"Ikan & Seafood","o":145428884},{"n":"Okey","k":"Ayam & Daging","o":122035500},{"n":"Jofrans","k":"Ayam & Daging","o":112449500},{"n":"Lutosa","k":"Kentang Goreng","o":61463500},{"n":"Miami","k":"Es Krim","o":50020000},{"n":"Eurial","k":"Keju, Saus & Lain","o":47920000},{"n":"Mitraku","k":"Ikan & Seafood","o":35842191},{"n":"Indoeskrim","k":"Es Krim","o":25935000},{"n":"Julienne","k":"Kentang Goreng","o":22530000},{"n":"Belfoods","k":"Ayam & Daging","o":17087100}],"pelanggan":[{"n":"Adek Frozen","o":94387130,"t":74},{"n":"Anton","o":90733200,"t":32},{"n":"Toko Cita Rasa Baru","o":90660824,"t":94},{"n":"Hite","o":50980000,"t":15},{"n":"Rumah Sosis","o":28822500,"t":29},{"n":"Firdon","o":24780000,"t":3},{"n":"Pt. Dinamika Buah N.","o":21448000,"t":30},{"n":"Amanah Frozen","o":20316000,"t":53},{"n":"Graha Sandeni","o":15321000,"t":6},{"n":"Cash","o":15015000,"t":100}],"dow":[{"h":"Senin","avg":16242715.0,"n":4},{"h":"Selasa","avg":26837308.75,"n":4},{"h":"Rabu","avg":38692372.5,"n":4},{"h":"Kamis","avg":20256987.5,"n":4},{"h":"Jumat","avg":66135914.0,"n":4},{"h":"Sabtu","avg":24894258.5,"n":4},{"h":"Minggu","avg":null,"n":0}]},"7":{"kpi":{"omzet":811359804,"trx":1325,"pelanggan":96,"hari":24,"rata_hari":33806658.5,"rata_trx":612347.0218867925,"median":210000.0,"sku":158,"merek":53},"kat":[{"k":"Olahan Ayam & Daging","s":"Ayam & Daging","o":270841000},{"k":"Olahan Ikan & Seafood","s":"Ikan & Seafood","o":226597260},{"k":"Es Krim","s":"Es Krim","o":88272000},{"k":"Kentang Goreng","s":"Kentang Goreng","o":118421500},{"k":"Dimsum, Kulit & Camilan","s":"Dimsum & Camilan","o":66970896},{"k":"Keju, Saus & Lainnya","s":"Keju, Saus & Lain","o":40257148}],"produk":[{"n":"Minaku Otak Otak 500 gr","raw":"MINAKU OTAK OTAK 500 GR X 20 PACK","b":"Minaku","o":161154500},{"n":"Lutosa Shoestring 2,5 kg","raw":"LUTOSA SHOESTRING 2.5 KG X 4 PACK","b":"Lutosa","o":70345000},{"n":"Finna Kulit Lumpia 125 Mm","raw":"FINNA KULIT LUMPIA 125 MM X 36 PACK","b":"Finna","o":38289096},{"n":"Okey Sosis 500 gr","raw":"OKEY SOSIS 500 GR X 20 PACK","b":"Okey","o":38106000},{"n":"Indoeskrim 8 L Vanilla","raw":"INDOESKRIM 8 LTR VANILLA","b":"Indoeskrim","o":30870000},{"n":"Miami 8 L Neapolitan Choco Chips","raw":"MIAMI 8 LTR NEAPOLITAN CHOCO CHIPS","b":"Miami","o":26887000},{"n":"Okey Sosis 1000 gr","raw":"OKEY SOSIS 1000 GR X 10 PACK","b":"Okey","o":23779000},{"n":"Jofrans Nugget Ayam Hati 500 gr","raw":"JOFRANS NUGGET AYAM HATI 500 GR X 12 PAK","b":"Jofrans","o":23571800},{"n":"Jofrans Nugget Ayam Hati 1000 gr","raw":"JOFRANS NUGGET AYAM HATI 1000 GR X 10","b":"Jofrans","o":23092500},{"n":"Miami 8 L Neapolitan","raw":"MIAMI 8 LTR NEAPOLITAN","b":"Miami","o":21140000}],"merek":[{"n":"Minaku","k":"Ikan & Seafood","o":171304500},{"n":"Jofrans","k":"Ayam & Daging","o":124349000},{"n":"Okey","k":"Ayam & Daging","o":86088500},{"n":"Lutosa","k":"Kentang Goreng","o":82185500},{"n":"Miami","k":"Es Krim","o":52457000},{"n":"Finna","k":"Dimsum & Camilan","o":38289096},{"n":"Indoeskrim","k":"Es Krim","o":35280000},{"n":"Shifudo","k":"Ikan & Seafood","o":19637110},{"n":"Mitraku","k":"Ikan & Seafood","o":18184850},{"n":"Julienne","k":"Kentang Goreng","o":16565000}],"pelanggan":[{"n":"Toko Cita Rasa Baru","o":122272194,"t":139},{"n":"Adek Frozen","o":102525500,"t":53},{"n":"Anton","o":46187100,"t":24},{"n":"Rumah Sosis","o":44281200,"t":45},{"n":"Graha Sandeni","o":41711000,"t":12},{"n":"Hite","o":34319000,"t":18},{"n":"Firdon","o":32550000,"t":2},{"n":"Pak H. Rafdi","o":27900600,"t":12},{"n":"Cash","o":22250000,"t":183},{"n":"Pak Gunawan","o":22155500,"t":25}],"dow":[{"h":"Senin","avg":44492515.333333336,"n":3},{"h":"Selasa","avg":21263600.0,"n":4},{"h":"Rabu","avg":54514199.5,"n":4},{"h":"Kamis","avg":34490206.0,"n":5},{"h":"Jumat","avg":30726970.0,"n":4},{"h":"Sabtu","avg":19853037.5,"n":4},{"h":"Minggu","avg":null,"n":0}]},"8":{"kpi":{"omzet":883314940,"trx":1068,"pelanggan":112,"hari":24,"rata_hari":36804789.166666664,"rata_trx":827073.913857678,"median":240000.0,"sku":144,"merek":52},"kat":[{"k":"Olahan Ayam & Daging","s":"Ayam & Daging","o":274051300},{"k":"Olahan Ikan & Seafood","s":"Ikan & Seafood","o":374120596},{"k":"Es Krim","s":"Es Krim","o":90266000},{"k":"Kentang Goreng","s":"Kentang Goreng","o":74863500},{"k":"Dimsum, Kulit & Camilan","s":"Dimsum & Camilan","o":51217720},{"k":"Keju, Saus & Lainnya","s":"Keju, Saus & Lain","o":18795824}],"produk":[{"n":"Minaku Otak Otak 500 gr","raw":"MINAKU OTAK OTAK 500 GR X 20 PACK","b":"Minaku","o":287481000},{"n":"Okey Sosis 500 gr","raw":"OKEY SOSIS 500 GR X 20 PACK","b":"Okey","o":57131000},{"n":"Ip Kulit Lumpia Isi 50 Lembar","raw":"IP KULIT LUMPIA ISI 50 LEMBAR X 36 PACK","b":"Ip","o":31464000},{"n":"Bart'S Shoestring 2,5 kg","raw":"BART'S SHOESTRING 2.5 KG X 4 PACK","b":"Bart'S","o":30337500},{"n":"Miami 8 L Neapolitan","raw":"MIAMI 8 LTR NEAPOLITAN","b":"Miami","o":29520000},{"n":"Miami 8 L Neapolitan Choco Chips","raw":"MIAMI 8 LTR NEAPOLITAN CHOCO CHIPS","b":"Miami","o":27206000},{"n":"Bart'S Shoestring 1 kg","raw":"BART'S SHOESTRING 1 KG X 10 PACK","b":"Bart'S","o":24987000},{"n":"Indoeskrim 8 L Vanilla","raw":"INDOESKRIM 8 LTR VANILLA","b":"Indoeskrim","o":24574000},{"n":"Okey Sosis 1000 gr","raw":"OKEY SOSIS 1000 GR X 10 PACK","b":"Okey","o":23407500},{"n":"Okey Stick 500 gr","raw":"OKEY STICK 500 GR X 10 PACK","b":"Okey","o":22124000}],"merek":[{"n":"Minaku","k":"Ikan & Seafood","o":295776904},{"n":"Okey","k":"Ayam & Daging","o":107848500},{"n":"Jofrans","k":"Ayam & Daging","o":96423500},{"n":"Miami","k":"Es Krim","o":58436000},{"n":"Bart'S","k":"Kentang Goreng","o":55324500},{"n":"Shifudo","k":"Ikan & Seafood","o":32919792},{"n":"Ip","k":"Dimsum & Camilan","o":31464000},{"n":"Indoeskrim","k":"Es Krim","o":29418000},{"n":"Belfoods","k":"Ayam & Daging","o":22558000},{"n":"Mitraku","k":"Ikan & Seafood","o":16128600}],"pelanggan":[{"n":"Pak Sutarmuji","o":126400000,"t":2},{"n":"Toko Cita Rasa Baru","o":112289528,"t":84},{"n":"Adek Frozen","o":46525900,"t":37},{"n":"Mas Rohmat","o":45750000,"t":1},{"n":"Anton","o":41254350,"t":23},{"n":"Firdon","o":27900000,"t":2},{"n":"Graha Sandeni","o":26115000,"t":5},{"n":"Pt. Dinamika Buah N.","o":24122000,"t":30},{"n":"Hite","o":22310000,"t":8},{"n":"Anjani Frozen Food","o":22171392,"t":29}],"dow":[{"h":"Senin","avg":67871623.5,"n":4},{"h":"Selasa","avg":42968672.5,"n":4},{"h":"Rabu","avg":29075768.5,"n":4},{"h":"Kamis","avg":31630075.333333332,"n":3},{"h":"Jumat","avg":32796580.0,"n":4},{"h":"Sabtu","avg":24348534.0,"n":4},{"h":"Minggu","avg":180000.0,"n":1}]},"9":{"kpi":{"omzet":747085424,"trx":1171,"pelanggan":95,"hari":25,"rata_hari":29883416.96,"rata_trx":637989.2604611443,"median":250000.0,"sku":178,"merek":49},"kat":[{"k":"Olahan Ayam & Daging","s":"Ayam & Daging","o":268474500},{"k":"Olahan Ikan & Seafood","s":"Ikan & Seafood","o":198039334},{"k":"Es Krim","s":"Es Krim","o":74617000},{"k":"Kentang Goreng","s":"Kentang Goreng","o":62826250},{"k":"Dimsum, Kulit & Camilan","s":"Dimsum & Camilan","o":107177860},{"k":"Keju, Saus & Lainnya","s":"Keju, Saus & Lain","o":35950480}],"produk":[{"n":"Minaku Otak Otak 500 gr","raw":"MINAKU OTAK OTAK 500 GR X 20 PACK","b":"Minaku","o":128044000},{"n":"Ip Kulit Lumpia Isi 50 Lembar","raw":"IP KULIT LUMPIA ISI 50 LEMBAR X 36 PACK","b":"Ip","o":50524500},{"n":"Okey Sosis 500 gr","raw":"OKEY SOSIS 500 GR X 20 PACK","b":"Okey","o":43009000},{"n":"Indoeskrim 8 L Vanilla","raw":"INDOESKRIM 8 LTR VANILLA","b":"Indoeskrim","o":26648000},{"n":"Bart'S Shoestring 2,5 kg","raw":"BART'S SHOESTRING 2.5 KG X 4 PACK","b":"Bart'S","o":24291250},{"n":"Jofrans Nugget Ayam Hati 500 gr","raw":"JOFRANS NUGGET AYAM HATI 500 GR X 12 PAK","b":"Jofrans","o":23475500},{"n":"Okey Stick 500 gr","raw":"OKEY STICK 500 GR X 10 PACK","b":"Okey","o":21459500},{"n":"Miami 8 L Neapolitan Choco Chips","raw":"MIAMI 8 LTR NEAPOLITAN CHOCO CHIPS","b":"Miami","o":21268000},{"n":"Okey Sosis 1000 gr","raw":"OKEY SOSIS 1000 GR X 10 PACK","b":"Okey","o":20662000},{"n":"Jofrans Nugget Ayam Hati 1000 gr","raw":"JOFRANS NUGGET AYAM HATI 1000 GR X 10","b":"Jofrans","o":19760500}],"merek":[{"n":"Minaku","k":"Ikan & Seafood","o":145012916},{"n":"Okey","k":"Ayam & Daging","o":92920500},{"n":"Jofrans","k":"Ayam & Daging","o":91192000},{"n":"Ip","k":"Dimsum & Camilan","o":61774000},{"n":"Miami","k":"Es Krim","o":41098000},{"n":"Bart'S","k":"Kentang Goreng","o":36229250},{"n":"Indoeskrim","k":"Es Krim","o":30969000},{"n":"Den","k":"Ayam & Daging","o":27430000},{"n":"Shifudo","k":"Ikan & Seafood","o":22419068},{"n":"Wei","k":"Dimsum & Camilan","o":20711000}],"pelanggan":[{"n":"Toko Cita Rasa Baru","o":108300396,"t":115},{"n":"Hite","o":54484000,"t":22},{"n":"Adek Frozen","o":44815900,"t":38},{"n":"Graha Sandeni","o":44466400,"t":27},{"n":"Rumah Sosis","o":35680500,"t":27},{"n":"Anton","o":34531000,"t":27},{"n":"Pak H. Rafdi","o":25772500,"t":10},{"n":"Yudi","o":22540410,"t":55},{"n":"Fun Mart","o":19096500,"t":40},{"n":"Amanah Frozen","o":18412600,"t":66}],"dow":[{"h":"Senin","avg":37308498.666666664,"n":3},{"h":"Selasa","avg":17797174.0,"n":5},{"h":"Rabu","avg":55290457.6,"n":5},{"h":"Kamis","avg":12496790.0,"n":4},{"h":"Jumat","avg":25255625.0,"n":4},{"h":"Sabtu","avg":29678027.5,"n":4},{"h":"Minggu","avg":null,"n":0}]}},"bulan":[{"m":4,"l":"Apr","f":"April"},{"m":5,"l":"Mei","f":"Mei"},{"m":6,"l":"Jun","f":"Juni"},{"m":7,"l":"Jul","f":"Juli"},{"m":8,"l":"Agu","f":"Agustus"},{"m":9,"l":"Sep","f":"September"}],"harian":[{"t":"2020-04-01","o":11867265,"n":32,"w":3},{"t":"2020-04-02","o":18974368,"n":57,"w":4},{"t":"2020-04-03","o":36255004,"n":54,"w":5},{"t":"2020-04-04","o":6904800,"n":32,"w":6},{"t":"2020-04-05","o":0,"n":0,"w":0},{"t":"2020-04-06","o":24344500,"n":57,"w":1},{"t":"2020-04-07","o":12842000,"n":25,"w":2},{"t":"2020-04-08","o":5211500,"n":10,"w":3},{"t":"2020-04-09","o":66648332,"n":92,"w":4},{"t":"2020-04-10","o":0,"n":0,"w":5},{"t":"2020-04-11","o":13611500,"n":50,"w":6},{"t":"2020-04-12","o":0,"n":0,"w":0},{"t":"2020-04-13","o":21421650,"n":53,"w":1},{"t":"2020-04-14","o":12140200,"n":13,"w":2},{"t":"2020-04-15","o":17468500,"n":28,"w":3},{"t":"2020-04-16","o":6266500,"n":27,"w":4},{"t":"2020-04-17","o":10336960,"n":38,"w":5},{"t":"2020-04-18","o":62395190,"n":77,"w":6},{"t":"2020-04-19","o":0,"n":0,"w":0},{"t":"2020-04-20","o":41935480,"n":44,"w":1},{"t":"2020-04-21","o":4740970,"n":13,"w":2},{"t":"2020-04-22","o":27932950,"n":46,"w":3},{"t":"2020-04-23","o":7455000,"n":20,"w":4},{"t":"2020-04-24","o":63650104,"n":86,"w":5},{"t":"2020-04-25","o":9208820,"n":15,"w":6},{"t":"2020-04-26","o":0,"n":0,"w":0},{"t":"2020-04-27","o":13137820,"n":23,"w":1},{"t":"2020-04-28","o":78683500,"n":76,"w":2},{"t":"2020-04-29","o":22412720,"n":41,"w":3},{"t":"2020-04-30","o":13768500,"n":20,"w":4},{"t":"2020-05-01","o":0,"n":0,"w":5},{"t":"2020-05-02","o":48945700,"n":40,"w":6},{"t":"2020-05-03","o":0,"n":0,"w":0},{"t":"2020-05-04","o":19951500,"n":86,"w":1},{"t":"2020-05-05","o":4922650,"n":22,"w":2},{"t":"2020-05-06","o":3919000,"n":16,"w":3},{"t":"2020-05-07","o":0,"n":0,"w":4},{"t":"2020-05-08","o":93943900,"n":94,"w":5},{"t":"2020-05-09","o":11617400,"n":27,"w":6},{"t":"2020-05-10","o":0,"n":0,"w":0},{"t":"2020-05-11","o":13963190,"n":38,"w":1},{"t":"2020-05-12","o":31659900,"n":32,"w":2},{"t":"2020-05-13","o":85583440,"n":53,"w":3},{"t":"2020-05-14","o":5697150,"n":23,"w":4},{"t":"2020-05-15","o":8250000,"n":11,"w":5},{"t":"2020-05-16","o":36486850,"n":113,"w":6},{"t":"2020-05-17","o":0,"n":0,"w":0},{"t":"2020-05-18","o":75120700,"n":61,"w":1},{"t":"2020-05-19","o":9201780,"n":11,"w":2},{"t":"2020-05-20","o":59875970,"n":58,"w":3},{"t":"2020-05-21","o":0,"n":0,"w":4},{"t":"2020-05-22","o":39493280,"n":30,"w":5},{"t":"2020-05-23","o":2726000,"n":10,"w":6},{"t":"2020-05-24","o":0,"n":0,"w":0},{"t":"2020-05-25","o":0,"n":0,"w":1},{"t":"2020-05-26","o":0,"n":0,"w":2},{"t":"2020-05-27","o":24679600,"n":43,"w":3},{"t":"2020-05-28","o":39074600,"n":38,"w":4},{"t":"2020-05-29","o":11903280,"n":42,"w":5},{"t":"2020-05-30","o":79702204,"n":137,"w":6},{"t":"2020-05-31","o":0,"n":0,"w":0},{"t":"2020-06-01","o":0,"n":0,"w":1},{"t":"2020-06-02","o":0,"n":0,"w":2},{"t":"2020-06-03","o":97545350,"n":105,"w":3},{"t":"2020-06-04","o":11607800,"n":39,"w":4},{"t":"2020-06-05","o":51841650,"n":60,"w":5},{"t":"2020-06-06","o":15388500,"n":35,"w":6},{"t":"2020-06-07","o":0,"n":0,"w":0},{"t":"2020-06-08","o":15205450,"n":52,"w":1},{"t":"2020-06-09","o":10522685,"n":37,"w":2},{"t":"2020-06-10","o":6228000,"n":10,"w":3},{"t":"2020-06-11","o":57637650,"n":66,"w":4},{"t":"2020-06-12","o":17230500,"n":27,"w":5},{"t":"2020-06-13","o":32273000,"n":90,"w":6},{"t":"2020-06-14","o":0,"n":0,"w":0},{"t":"2020-06-15","o":9104360,"n":23,"w":1},{"t":"2020-06-16","o":26617800,"n":49,"w":2},{"t":"2020-06-17","o":42865640,"n":87,"w":3},{"t":"2020-06-18","o":7028000,"n":17,"w":4},{"t":"2020-06-19","o":6983000,"n":16,"w":5},{"t":"2020-06-20","o":30961884,"n":60,"w":6},{"t":"2020-06-21","o":0,"n":0,"w":0},{"t":"2020-06-22","o":21041450,"n":51,"w":1},{"t":"2020-06-23","o":49812250,"n":74,"w":2},{"t":"2020-06-24","o":8130500,"n":24,"w":3},{"t":"2020-06-25","o":4754500,"n":6,"w":4},{"t":"2020-06-26","o":188488506,"n":129,"w":5},{"t":"2020-06-27","o":20953650,"n":24,"w":6},{"t":"2020-06-28","o":0,"n":0,"w":0},{"t":"2020-06-29","o":19619600,"n":34,"w":1},{"t":"2020-06-30","o":20396500,"n":85,"w":2},{"t":"2020-07-01","o":0,"n":0,"w":3},{"t":"2020-07-02","o":29875000,"n":20,"w":4},{"t":"2020-07-03","o":74557780,"n":62,"w":5},{"t":"2020-07-04","o":21562350,"n":75,"w":6},{"t":"2020-07-05","o":0,"n":0,"w":0},{"t":"2020-07-06","o":43368600,"n":92,"w":1},{"t":"2020-07-07","o":25756500,"n":48,"w":2},{"t":"2020-07-08","o":11374500,"n":14,"w":3},{"t":"2020-07-09","o":3239500,"n":7,"w":4},{"t":"2020-07-10","o":18464000,"n":63,"w":5},{"t":"2020-07-11","o":9678000,"n":23,"w":6},{"t":"2020-07-12","o":0,"n":0,"w":0},{"t":"2020-07-13","o":44430800,"n":69,"w":1},{"t":"2020-07-14","o":8446000,"n":29,"w":2},{"t":"2020-07-15","o":13657000,"n":28,"w":3},{"t":"2020-07-16","o":48638000,"n":45,"w":4},{"t":"2020-07-17","o":22104500,"n":58,"w":5},{"t":"2020-07-18","o":13032000,"n":62,"w":6},{"t":"2020-07-19","o":0,"n":0,"w":0},{"t":"2020-07-20","o":0,"n":0,"w":1},{"t":"2020-07-21","o":34497400,"n":93,"w":2},{"t":"2020-07-22","o":29811600,"n":43,"w":3},{"t":"2020-07-23","o":75851850,"n":115,"w":4},{"t":"2020-07-24","o":7781600,"n":26,"w":5},{"t":"2020-07-25","o":35139800,"n":48,"w":6},{"t":"2020-07-26","o":0,"n":0,"w":0},{"t":"2020-07-27","o":45678146,"n":109,"w":1},{"t":"2020-07-28","o":16354500,"n":31,"w":2},{"t":"2020-07-29","o":163213698,"n":79,"w":3},{"t":"2020-07-30","o":14846680,"n":86,"w":4},{"t":"2020-07-31","o":0,"n":0,"w":5},{"t":"2020-08-01","o":0,"n":0,"w":6},{"t":"2020-08-02","o":0,"n":0,"w":0},{"t":"2020-08-03","o":129031800,"n":35,"w":1},{"t":"2020-08-04","o":11390700,"n":28,"w":2},{"t":"2020-08-05","o":47280974,"n":53,"w":3},{"t":"2020-08-06","o":15031500,"n":36,"w":4},{"t":"2020-08-07","o":29413920,"n":78,"w":5},{"t":"2020-08-08","o":20628000,"n":10,"w":6},{"t":"2020-08-09","o":0,"n":0,"w":0},{"t":"2020-08-10","o":83834604,"n":104,"w":1},{"t":"2020-08-11","o":4090000,"n":14,"w":2},{"t":"2020-08-12","o":19717580,"n":38,"w":3},{"t":"2020-08-13","o":65617000,"n":18,"w":4},{"t":"2020-08-14","o":12286000,"n":49,"w":5},{"t":"2020-08-15","o":9145000,"n":11,"w":6},{"t":"2020-08-16","o":0,"n":0,"w":0},{"t":"2020-08-17","o":0,"n":0,"w":1},{"t":"2020-08-18","o":144880990,"n":127,"w":2},{"t":"2020-08-19","o":11098000,"n":10,"w":3},{"t":"2020-08-20","o":0,"n":0,"w":4},{"t":"2020-08-21","o":47000400,"n":63,"w":5},{"t":"2020-08-22","o":39747636,"n":74,"w":6},{"t":"2020-08-23","o":0,"n":0,"w":0},{"t":"2020-08-24","o":40633790,"n":97,"w":1},{"t":"2020-08-25","o":11513000,"n":19,"w":2},{"t":"2020-08-26","o":38206520,"n":50,"w":3},{"t":"2020-08-27","o":14241726,"n":9,"w":4},{"t":"2020-08-28","o":42486000,"n":23,"w":5},{"t":"2020-08-29","o":27873500,"n":59,"w":6},{"t":"2020-08-30","o":180000,"n":1,"w":0},{"t":"2020-08-31","o":17986300,"n":62,"w":1},{"t":"2020-09-01","o":1401500,"n":10,"w":2},{"t":"2020-09-02","o":63093520,"n":80,"w":3},{"t":"2020-09-03","o":21315500,"n":21,"w":4},{"t":"2020-09-04","o":4628000,"n":14,"w":5},{"t":"2020-09-05","o":19837500,"n":19,"w":6},{"t":"2020-09-06","o":0,"n":0,"w":0},{"t":"2020-09-07","o":24769500,"n":29,"w":1},{"t":"2020-09-08","o":7512870,"n":20,"w":2},{"t":"2020-09-09","o":75502368,"n":143,"w":3},{"t":"2020-09-10","o":9860500,"n":12,"w":4},{"t":"2020-09-11","o":22735500,"n":26,"w":5},{"t":"2020-09-12","o":25000,"n":1,"w":6},{"t":"2020-09-13","o":0,"n":0,"w":0},{"t":"2020-09-14","o":19778500,"n":38,"w":1},{"t":"2020-09-15","o":7282000,"n":24,"w":2},{"t":"2020-09-16","o":106766300,"n":138,"w":3},{"t":"2020-09-17","o":7160000,"n":3,"w":4},{"t":"2020-09-18","o":69356000,"n":91,"w":5},{"t":"2020-09-19","o":47004910,"n":133,"w":6},{"t":"2020-09-20","o":0,"n":0,"w":0},{"t":"2020-09-21","o":67377496,"n":63,"w":1},{"t":"2020-09-22","o":37616000,"n":64,"w":2},{"t":"2020-09-23","o":3559000,"n":10,"w":3},{"t":"2020-09-24","o":11651160,"n":38,"w":4},{"t":"2020-09-25","o":4303000,"n":19,"w":5},{"t":"2020-09-26","o":51844700,"n":78,"w":6},{"t":"2020-09-27","o":0,"n":0,"w":0},{"t":"2020-09-28","o":0,"n":0,"w":1},{"t":"2020-09-29","o":35173500,"n":49,"w":2},{"t":"2020-09-30","o":27531100,"n":48,"w":3}],"kat_bulan":{"Olahan Ayam & Daging":[240772100,261560900,281344450,270841000,274051300,268474500],"Olahan Ikan & Seafood":[157262403,249861489,208589985,226597260,374120596,198039334],"Es Krim":[28961000,74151000,83647500,88272000,90266000,74617000],"Kentang Goreng":[96980250,50490000,104263500,118421500,74863500,62826250],"Dimsum, Kulit & Camilan":[42613436,26873105,26242500,66970896,51217720,107177860],"Keju, Saus & Lainnya":[43024944,43781600,68150290,40257148,18795824,35950480]},"kats":[{"k":"Olahan Ayam & Daging","s":"Ayam & Daging"},{"k":"Olahan Ikan & Seafood","s":"Ikan & Seafood"},{"k":"Es Krim","s":"Es Krim"},{"k":"Kentang Goreng","s":"Kentang Goreng"},{"k":"Dimsum, Kulit & Camilan","s":"Dimsum & Camilan"},{"k":"Keju, Saus & Lainnya","s":"Keju, Saus & Lain"}],"total_all":4530330620,"aktif6":35};
+const EXTRA = {"pareto":{"all":{"n":268,"k80":38,"cum":[0.2136,0.2879,0.33,0.3655,0.4,0.4292,0.4576,0.4852,0.5102,0.5339,0.552,0.5686,0.5845,0.5984,0.6122,0.6253,0.6376,0.6498,0.6619,0.6737,0.6844,0.6947,0.7046,0.7134,0.7219,0.7302,0.7383,0.7456,0.7528,0.7589,0.7648,0.7706,0.776,0.7813,0.7866,0.7916,0.7966,0.801,0.8053,0.8095,0.8132,0.8169,0.8206,0.8242,0.8277,0.8311,0.8342,0.8373,0.8403,0.8432,0.8461,0.8489,0.8518,0.8545,0.8572,0.8599,0.8626,0.865,0.8674,0.8698,0.8722,0.8744,0.8766,0.8788,0.881,0.8831,0.8852,0.8872,0.8893,0.8912,0.893,0.8948,0.8966,0.8983,0.8999,0.9015,0.9031,0.9047,0.9062,0.9077,0.9091,0.9105,0.9118,0.9132,0.9145,0.9158,0.9171,0.9184,0.9196,0.9209,0.9221,0.9233,0.9245,0.9257,0.9269,0.9281,0.9292,0.9304,0.9315,0.9325,0.9336,0.9347,0.9357,0.9368,0.9378,0.9388,0.9398,0.9408,0.9418,0.9427,0.9437,0.9447,0.9456,0.9466,0.9475,0.9483,0.9492,0.9501,0.9509,0.9517,0.9525,0.9534,0.9542,0.9549,0.9557,0.9565,0.9572,0.9579,0.9587,0.9594,0.9601,0.9608,0.9615,0.9622,0.9628,0.9635,0.9642,0.9648,0.9655,0.9661,0.9668,0.9674,0.968,0.9686,0.9692,0.9699,0.9704,0.971,0.9716,0.9722,0.9727,0.9733,0.9738,0.9744,0.9749,0.9755,0.976,0.9765,0.977,0.9776,0.9781,0.9785,0.979,0.9794,0.9799,0.9803,0.9808,0.9812,0.9816,0.982,0.9824,0.9828,0.9832,0.9836,0.984,0.9844,0.9847,0.9851,0.9855,0.9859,0.9862,0.9866,0.9869,0.9873,0.9876,0.9879,0.9883,0.9886,0.9889,0.9892,0.9895,0.9898,0.9901,0.9904,0.9906,0.9909,0.9912,0.9915,0.9917,0.992,0.9922,0.9925,0.9927,0.993,0.9932,0.9935,0.9937,0.9939,0.9942,0.9944,0.9946,0.9949,0.9951,0.9953,0.9955,0.9957,0.9958,0.996,0.9962,0.9964,0.9966,0.9967,0.9969,0.997,0.9971,0.9973,0.9974,0.9975,0.9976,0.9978,0.9979,0.998,0.9981,0.9982,0.9984,0.9985,0.9986,0.9987,0.9987,0.9988,0.9989,0.999,0.9991,0.9991,0.9992,0.9993,0.9993,0.9994,0.9994,0.9995,0.9995,0.9996,0.9996,0.9997,0.9997,0.9997,0.9998,0.9998,0.9998,0.9999,0.9999,0.9999,0.9999,1.0,1.0,1.0,1.0,1.0]},"4":{"n":116,"k80":28,"cum":[0.1057,0.2112,0.3153,0.3756,0.4269,0.4671,0.5071,0.545,0.5776,0.6007,0.6198,0.6343,0.6479,0.6612,0.6744,0.6874,0.6998,0.7114,0.723,0.7332,0.7432,0.7531,0.7627,0.7714,0.78,0.7885,0.7965,0.8043,0.8117,0.8186,0.8244,0.8302,0.8359,0.8416,0.8471,0.8524,0.8575,0.8625,0.8675,0.8723,0.8769,0.8814,0.8855,0.8897,0.8936,0.8975,0.9012,0.9048,0.9082,0.9114,0.9145,0.9175,0.9204,0.9233,0.9261,0.9288,0.9314,0.934,0.9366,0.939,0.9414,0.9438,0.9462,0.9485,0.9508,0.953,0.9551,0.9571,0.9591,0.9609,0.9627,0.9644,0.9661,0.9678,0.9694,0.971,0.9725,0.9741,0.9756,0.977,0.9784,0.9795,0.9806,0.9817,0.9827,0.9837,0.9847,0.9856,0.9866,0.9874,0.9882,0.989,0.9898,0.9906,0.9913,0.9919,0.9926,0.9932,0.9939,0.9945,0.9951,0.9957,0.9962,0.9967,0.9971,0.9975,0.9979,0.9983,0.9987,0.999,0.9993,0.9995,0.9997,0.9999,1.0,1.0]},"5":{"n":121,"k80":21,"cum":[0.2734,0.3784,0.4366,0.4805,0.5243,0.5663,0.5988,0.6191,0.639,0.6583,0.6769,0.6937,0.7102,0.7263,0.7424,0.7549,0.7661,0.7772,0.7864,0.7955,0.8045,0.8126,0.8201,0.8274,0.8347,0.8411,0.847,0.8528,0.8586,0.8642,0.8697,0.8747,0.8795,0.8841,0.8882,0.8919,0.8955,0.899,0.9025,0.906,0.9094,0.9127,0.9158,0.9189,0.9219,0.9248,0.9274,0.9298,0.932,0.9343,0.9364,0.9385,0.9406,0.9426,0.9446,0.9465,0.9483,0.95,0.9516,0.9532,0.9547,0.9561,0.9576,0.959,0.9604,0.9618,0.9632,0.9646,0.9658,0.9671,0.9683,0.9696,0.9708,0.972,0.9731,0.9742,0.9753,0.9765,0.9775,0.9786,0.9796,0.9806,0.9816,0.9827,0.9836,0.9846,0.9854,0.9863,0.9872,0.988,0.9888,0.9895,0.9902,0.9909,0.9915,0.9921,0.9926,0.9932,0.9937,0.9943,0.9948,0.9953,0.9958,0.9962,0.9967,0.9971,0.9974,0.9977,0.998,0.9983,0.9986,0.9988,0.9991,0.9993,0.9995,0.9996,0.9998,0.9999,1.0,1.0,1.0]},"6":{"n":143,"k80":28,"cum":[0.1727,0.251,0.3138,0.3759,0.4144,0.4513,0.4846,0.5159,0.5454,0.5745,0.6023,0.6279,0.6461,0.6636,0.6804,0.6951,0.7066,0.7176,0.7275,0.737,0.7462,0.7554,0.7643,0.7727,0.7802,0.7874,0.7943,0.8012,0.8072,0.813,0.8185,0.8241,0.8294,0.8347,0.8398,0.8447,0.8492,0.8535,0.8577,0.8619,0.8661,0.8702,0.8741,0.878,0.8819,0.8858,0.8892,0.8927,0.896,0.8994,0.9027,0.906,0.9093,0.9124,0.9156,0.9186,0.9215,0.9242,0.9266,0.929,0.9313,0.9336,0.9358,0.9379,0.94,0.942,0.944,0.9459,0.9477,0.9496,0.9513,0.9531,0.9547,0.9563,0.9578,0.9592,0.9605,0.9619,0.9633,0.9646,0.9659,0.9672,0.9684,0.9696,0.9709,0.9721,0.9732,0.9744,0.9755,0.9766,0.9777,0.9788,0.9799,0.9809,0.9818,0.9828,0.9837,0.9846,0.9856,0.9865,0.9872,0.9879,0.9886,0.9892,0.9899,0.9904,0.991,0.9915,0.992,0.9925,0.993,0.9934,0.9938,0.9942,0.9946,0.9949,0.9952,0.9955,0.9958,0.9961,0.9964,0.9967,0.9969,0.9972,0.9975,0.9977,0.9979,0.9981,0.9983,0.9985,0.9987,0.9988,0.999,0.9991,0.9992,0.9994,0.9995,0.9996,0.9997,0.9998,0.9999,0.9999,1.0]},"7":{"n":158,"k80":28,"cum":[0.1986,0.2853,0.3325,0.3795,0.4175,0.4507,0.48,0.509,0.5375,0.5635,0.5853,0.6065,0.6269,0.6451,0.6609,0.6755,0.6898,0.7039,0.7175,0.7296,0.7409,0.7521,0.7626,0.772,0.7802,0.7881,0.7953,0.8024,0.8084,0.8139,0.8191,0.8239,0.8283,0.8327,0.8371,0.8414,0.8455,0.8494,0.8533,0.8569,0.8605,0.864,0.8674,0.8707,0.8739,0.8771,0.8802,0.8833,0.8863,0.8892,0.892,0.8948,0.8974,0.9001,0.9027,0.9052,0.9075,0.9098,0.912,0.9141,0.9161,0.9181,0.9201,0.922,0.9239,0.9258,0.9276,0.9294,0.9312,0.933,0.9347,0.9365,0.9382,0.9399,0.9416,0.9432,0.9448,0.9464,0.9479,0.9495,0.951,0.9525,0.9539,0.9553,0.9567,0.958,0.9593,0.9606,0.962,0.9632,0.9645,0.9657,0.9669,0.9681,0.9692,0.9703,0.9715,0.9725,0.9736,0.9746,0.9756,0.9766,0.9775,0.9784,0.9793,0.9801,0.9809,0.9817,0.9825,0.9833,0.984,0.9847,0.9854,0.986,0.9867,0.9873,0.9879,0.9885,0.9891,0.9896,0.9902,0.9907,0.9912,0.9917,0.9922,0.9926,0.9931,0.9935,0.9939,0.9944,0.9948,0.9951,0.9954,0.9957,0.9961,0.9963,0.9966,0.9969,0.9972,0.9974,0.9977,0.9979,0.9981,0.9984,0.9986,0.9988,0.999,0.9991,0.9993,0.9995,0.9996,0.9997,0.9998,0.9998,0.9999,0.9999,1.0,1.0]},"8":{"n":144,"k80":23,"cum":[0.3255,0.3901,0.4258,0.4601,0.4935,0.5243,0.5526,0.5804,0.6069,0.632,0.6548,0.6759,0.6969,0.7115,0.7258,0.7386,0.7497,0.7603,0.7708,0.78,0.7889,0.7977,0.8061,0.8136,0.821,0.8283,0.8342,0.8397,0.8449,0.8494,0.8538,0.8582,0.8626,0.8667,0.8707,0.8745,0.8782,0.8819,0.8854,0.8887,0.8918,0.8949,0.8977,0.9005,0.9032,0.9058,0.9085,0.911,0.9135,0.9159,0.9183,0.9206,0.9229,0.9251,0.9272,0.9293,0.9313,0.9333,0.9353,0.9373,0.9392,0.9411,0.9429,0.9445,0.9461,0.9476,0.9491,0.9506,0.9521,0.9535,0.955,0.9563,0.9577,0.959,0.9603,0.9616,0.9628,0.964,0.9652,0.9663,0.9675,0.9686,0.9697,0.9708,0.9718,0.9729,0.9738,0.9748,0.9757,0.9765,0.9774,0.9782,0.979,0.9798,0.9806,0.9813,0.982,0.9828,0.9835,0.9842,0.9848,0.9855,0.9862,0.9867,0.9873,0.9879,0.9885,0.989,0.9896,0.9901,0.9907,0.9912,0.9917,0.9922,0.9926,0.9931,0.9935,0.9939,0.9944,0.9948,0.9952,0.9956,0.996,0.9963,0.9966,0.9969,0.9972,0.9975,0.9978,0.998,0.9982,0.9984,0.9986,0.9988,0.999,0.9992,0.9994,0.9995,0.9996,0.9997,0.9998,0.9999,1.0,1.0]},"9":{"n":178,"k80":39,"cum":[0.1714,0.239,0.2966,0.3323,0.3648,0.3962,0.4249,0.4534,0.481,0.5075,0.5327,0.5525,0.5708,0.5868,0.6007,0.6145,0.627,0.6394,0.6517,0.6623,0.6728,0.683,0.6925,0.7018,0.7105,0.7187,0.7269,0.735,0.7429,0.7504,0.757,0.7633,0.7694,0.7753,0.7808,0.7862,0.7915,0.7967,0.8016,0.8065,0.8113,0.8162,0.8208,0.8248,0.8287,0.8327,0.8366,0.8405,0.844,0.8475,0.8509,0.8543,0.8576,0.8608,0.8638,0.8668,0.8697,0.8725,0.8752,0.8777,0.8801,0.8824,0.8847,0.887,0.8893,0.8916,0.8939,0.8961,0.8983,0.9004,0.9025,0.9044,0.9064,0.9083,0.9102,0.9121,0.9139,0.9158,0.9176,0.9194,0.9212,0.923,0.9247,0.9265,0.9282,0.9299,0.9316,0.9332,0.9347,0.9362,0.9377,0.9392,0.9406,0.9421,0.9435,0.9449,0.9463,0.9477,0.9491,0.9505,0.9519,0.9532,0.9546,0.9559,0.9572,0.9584,0.9597,0.9609,0.9621,0.9633,0.9644,0.9655,0.9666,0.9676,0.9687,0.9698,0.9708,0.9718,0.9728,0.9738,0.9748,0.9758,0.9768,0.9777,0.9787,0.9796,0.9806,0.9815,0.9823,0.9832,0.9839,0.9847,0.9855,0.9862,0.9869,0.9876,0.9882,0.9888,0.9894,0.9899,0.9905,0.991,0.9915,0.992,0.9925,0.9929,0.9934,0.9938,0.9941,0.9945,0.9949,0.9952,0.9956,0.9959,0.9962,0.9965,0.9969,0.9972,0.9974,0.9977,0.998,0.9983,0.9985,0.9988,0.999,0.9992,0.9993,0.9994,0.9995,0.9996,0.9997,0.9997,0.9998,0.9999,0.9999,1.0,1.0,1.0]}},"cohort":[{"m":4,"baru":94,"lama":0,"ob":609614133,"ol":0},{"m":5,"baru":21,"lama":67,"ob":67983240,"ol":638734854},{"m":6,"baru":17,"lama":83,"ob":50103400,"ol":722134825},{"m":7,"baru":15,"lama":81,"ob":29439700,"ol":781920104},{"m":8,"baru":22,"lama":90,"ob":241695500,"ol":641619440},{"m":9,"baru":14,"lama":81,"ob":96633610,"ol":650451814}]};
+const ANOM = {"anom":{"nol":[{"t":"2020-04-02","m":4,"b":"Mitraku Fish Roll 250 Gr X 25 Pack","c":"Maju Jaya","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":13000},{"t":"2020-04-02","m":4,"b":"Mitraku Fish Roll 250 Gr X 25 Pack","c":"Retro","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":13000},{"t":"2020-04-18","m":4,"b":"Mitraku Bakso Ikan Isi Ayam 500 Gr X 20","c":"Sampling Mitraku","q":2,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":62000},{"t":"2020-04-18","m":4,"b":"Mitraku Dumpling 500 Gr X 20 Pack","c":"Sampling Mitraku","q":1,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":33350},{"t":"2020-04-18","m":4,"b":"Den Bagus Ayam Isi 13 X 50 Pack","c":"Defriadi","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":6000},{"t":"2020-04-18","m":4,"b":"Den Bagus Ikan Isi 32 X 20 Pack","c":"Firdon","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":13000},{"t":"2020-04-18","m":4,"b":"Den Bagus Bintang Isi 13 X 50 Pack","c":"Firdon","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":6000},{"t":"2020-04-18","m":4,"b":"Den Bagus Ayam Isi 13 X 50 Pack","c":"Firdon","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":6000},{"t":"2020-04-18","m":4,"b":"Den Bagus Stick Isi 32 X 30 Pack","c":"Firdon","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":12000},{"t":"2020-04-18","m":4,"b":"Den Bagus Stick Panjang X 50 Pack","c":"Firdon","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":4000},{"t":"2020-04-24","m":4,"b":"Den Bagus Ikan Isi 32 X 20 Pack","c":"Firdon","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":13000},{"t":"2020-04-24","m":4,"b":"Den Bagus Bintang Isi 13 X 50 Pack","c":"Firdon","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":6000},{"t":"2020-04-24","m":4,"b":"Den Bagus Ayam Isi 13 X 50 Pack","c":"Firdon","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":6000},{"t":"2020-04-25","m":4,"b":"Lutosa Shoestring 2.5 Kg X 4 Pack","c":"Cash","q":106,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":25440000},{"t":"2020-04-25","m":4,"b":"Bf Dimsum Siomay Udang 246 Gr X 35 Pack","c":"Cash","q":1,"s":"PACK","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":22200},{"t":"2020-05-04","m":5,"b":"Lutosa Shoestring 2.5 Kg X 4 Pack","c":"Cash","q":13,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":3120000},{"t":"2020-05-11","m":5,"b":"Bonju Cireng Salju Kuah Rujak","c":"Kubang Jaya Food","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":17500},{"t":"2020-05-16","m":5,"b":"Mitraku Suki Tomyam","c":"Tanjung Gading","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":18000},{"t":"2020-05-16","m":5,"b":"Bonju Cireng Salju Kuah Rujak","c":"Maju Jaya","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":17500},{"t":"2020-05-30","m":5,"b":"Julienne Shoestring 2.5 Kg X 4 Pack","c":"Cash","q":43,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":10320000},{"t":"2020-06-08","m":6,"b":"Lutosa Shoestring 500 Gr X 20 Pack","c":"Cash","q":8,"s":"PACK","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":120000},{"t":"2020-06-08","m":6,"b":"Julienne Shoestring 2.5 Kg X 4 Pack","c":"Cash","q":6,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":1440000},{"t":"2020-06-08","m":6,"b":"Arthur Shoestring 2.5 Kg X 4 Pack","c":"Cash","q":75,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":18375000},{"t":"2020-06-08","m":6,"b":"Aviko Shoestring 2.5 Kg X 4 Pack","c":"Cash","q":7,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":1470000},{"t":"2020-06-08","m":6,"b":"Aviko Shoestring 2.5 Kg X 4 Pack","c":"Cash","q":2,"s":"PACK","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":105000},{"t":"2020-06-08","m":6,"b":"Lutosa Shoestring 2.5 Kg X 4 Pack","c":"Cash","q":52,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":12480000},{"t":"2020-06-09","m":6,"b":"Belfoods Sosis Ayam 1000 Gr X 6 Pack","c":"Cash","q":10,"s":"PACK","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":310000},{"t":"2020-07-04","m":7,"b":"Lutosa Shoestring 2.5 Kg X 4 Pack","c":"Cash","q":20,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":4800000},{"t":"2020-07-04","m":7,"b":"Cavendish Shoestring 2.94 Kg X 6 Pack","c":"Cash","q":16,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":7056000},{"t":"2020-07-04","m":7,"b":"Star Julienne Shoestring 2.5 Kg X 5 Pack","c":"Cash","q":5,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":1500000},{"t":"2020-07-04","m":7,"b":"Star Julienne Shoestring 2.5 Kg X 5 Pack","c":"Cash","q":2,"s":"PACK","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":125000},{"t":"2020-07-21","m":7,"b":"Den Bagus Nano Isi 21 X 20 Pack","c":"Cash","q":38,"s":"PACK","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":342000},{"t":"2020-07-21","m":7,"b":"Den Bagus Ikan Isi 32 X 20 Pack","c":"Cash","q":57,"s":"PACK","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":741000},{"t":"2020-07-22","m":7,"b":"Champ Sosis 1000 Gr X 10 Pack","c":"Cash","q":16,"s":"PACK","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":608000},{"t":"2020-07-29","m":7,"b":"Sunfish Dumpling Cheese 500 Gr X 12 Pack","c":"Adek Frozen","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":25000},{"t":"2020-08-06","m":8,"b":"Cavendish Shoestring 2.94 Kg X 6 Pack","c":"Cash","q":6,"s":"DUS","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":2646000},{"t":"2020-08-06","m":8,"b":"Star Julienne Shoestring 2.5 Kg X 5 Pack","c":"Cash","q":1,"s":"PACK","h":0,"j":0,"k":"Penjualan tunai tanpa harga","x":62500},{"t":"2020-08-27","m":8,"b":"Sunfish Fish Soy 500 Gr X 12 Pack","c":"Sampel Crb","q":1,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":18500},{"t":"2020-08-27","m":8,"b":"Sunfish Dumpling Cheese 500 Gr X 12 Pack","c":"Sampel Crb","q":1,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":25000},{"t":"2020-09-09","m":9,"b":"Wei Wang Mini Pao Sapi 30 Pcs X 12 Pack","c":"Fun Mart","q":3,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":37500},{"t":"2020-09-09","m":9,"b":"Wei Wang Mini Pao Coklat 30 Pcs X 12 Pak","c":"Fun Mart","q":3,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":45000},{"t":"2020-09-09","m":9,"b":"Vitalia Burger Sapi Isi 20 280 Gr X 10","c":"Fun Mart","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":11000},{"t":"2020-09-09","m":9,"b":"Vitalia Burger Sapi Isi 10 250 Gr X 16","c":"Fun Mart","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":8750},{"t":"2020-09-14","m":9,"b":"Vitalia Burger Sapi Isi 10 250 Gr X 16","c":"Fun Mart","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":8750},{"t":"2020-09-14","m":9,"b":"Vitalia Burger Sapi Isi 20 280 Gr X 10","c":"Fun Mart","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":11000},{"t":"2020-09-14","m":9,"b":"Vitalia Burger Sapi Isi 10 250 Gr X 16","c":"Pak Slamet / Mbah Bejo","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":8750},{"t":"2020-09-22","m":9,"b":"Tortila Kecil","c":"Batam Jaya","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":25250},{"t":"2020-09-22","m":9,"b":"Tortila Sedang","c":"Batam Jaya","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":25500},{"t":"2020-09-22","m":9,"b":"Kemfood Tortila Besar 25 Cm 0.7 Gram","c":"Batam Jaya","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":13000},{"t":"2020-09-22","m":9,"b":"Vitalia Burger Sapi Isi 10 250 Gr X 16","c":"Batam Jaya","q":1,"s":"PACK","h":0,"j":0,"k":"Tanpa harga","x":8750},{"t":"2020-09-26","m":9,"b":"Vigo Sosis Ayam Panjang 450 Gr X 20 Pack","c":"Sampel Crb","q":2,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":30000},{"t":"2020-09-26","m":9,"b":"Vigo Mini Burger Isi 20 Pcs 235 Grm X 20","c":"Sampel Crb","q":1,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":8000},{"t":"2020-09-26","m":9,"b":"Ip Kulit Lumpia Isi 50 Lbr (5 Inch) X 36","c":"Sampel Crb","q":1,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":10500},{"t":"2020-09-26","m":9,"b":"Jofrans Nugget Ayam Reg. 225 Gr X 24 Pak","c":"Sampel Crb","q":2,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":20000},{"t":"2020-09-26","m":9,"b":"Umia-Mi Mini Pao Coklat 30 Pcs X 12 Pak","c":"Sampel Crb","q":3,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":45000},{"t":"2020-09-26","m":9,"b":"Ip Lumpia Sayur Isi 20 Pcs 500 Gr X 24","c":"Sampel Crb","q":1,"s":"PCS","h":0,"j":0,"k":"Sampel/promo","x":21000},{"t":"2020-09-26","m":9,"b":"Jofrans Baso Ayam 500 Gr X 15 Pack","c":"Sampel Crb","q":1,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":24250},{"t":"2020-09-26","m":9,"b":"Jofrans Nugget Ayam Hati 1000 Gr X 10","c":"Sampel Crb","q":1,"s":"PACK","h":0,"j":0,"k":"Sampel/promo","x":33500}],"selisih":[{"t":"2020-04-02","m":4,"b":"Mitraku Fish Roll 250 Gr X 25 Pack","c":"Raisya Frozen","q":13,"s":"PACK","h":13000,"j":155480,"k":"Potongan 8%","x":13520},{"t":"2020-04-02","m":4,"b":"Mitraku Fish Roll 500 Gr X 20 Pack","c":"Raisya Frozen","q":6,"s":"PACK","h":23400,"j":129168,"k":"Potongan 8%","x":11232},{"t":"2020-04-02","m":4,"b":"Mitraku Fish Roll 1000 Gr X 10 Pack","c":"Raisya Frozen","q":4,"s":"PACK","h":46000,"j":169280,"k":"Potongan 8%","x":14720},{"t":"2020-04-02","m":4,"b":"Mitraku Fish Cake Singapore 1000 Gr X 10","c":"Raisya Frozen","q":6,"s":"PACK","h":52000,"j":287040,"k":"Potongan 8%","x":24960},{"t":"2020-04-02","m":4,"b":"Mitraku Bakso Pilus Ikan 400Gr X 23 Pack","c":"Maju Jaya","q":10,"s":"PACK","h":14900,"j":141550,"k":"Potongan 5%","x":7450},{"t":"2020-04-02","m":4,"b":"Mitraku Fish Roll 500 Gr X 20 Pack","c":"Maju Jaya","q":10,"s":"PACK","h":23400,"j":222300,"k":"Potongan 5%","x":11700},{"t":"2020-04-02","m":4,"b":"Mitraku Fish Roll 250 Gr X 25 Pack","c":"Maju Jaya","q":5,"s":"PACK","h":13000,"j":61750,"k":"Potongan 5%","x":3250},{"t":"2020-04-11","m":4,"b":"Mitraku Fish Cake Singapore 1000 Gr X 10","c":"Pak Supri","q":5,"s":"DUS","h":520000,"j":2340000,"k":"Potongan 10%","x":260000},{"t":"2020-04-13","m":4,"b":"Mantul Bakso Ikan 500 Gr X 20 Pack","c":"Raisya Frozen","q":1,"s":"DUS","h":334000,"j":317300,"k":"Potongan 5%","x":16700},{"t":"2020-04-13","m":4,"b":"Mantul Bakso Ikan Rasa Udang 500 Gr X 20","c":"Raisya Frozen","q":1,"s":"DUS","h":334000,"j":317300,"k":"Potongan 5%","x":16700},{"t":"2020-04-13","m":4,"b":"Mantul Otak Otak 500 Gr X 20 Pack","c":"Raisya Frozen","q":1,"s":"DUS","h":354000,"j":336300,"k":"Potongan 5%","x":17700},{"t":"2020-04-17","m":4,"b":"Mitraku Fish Roll 500 Gr X 20 Pack","c":"Raisya Frozen","q":1,"s":"DUS","h":468000,"j":430560,"k":"Potongan 8%","x":37440},{"t":"2020-04-18","m":4,"b":"Mitraku Scallop 400 Gr X 23 Pack","c":"Pt. Dinamika Buah N.","q":23,"s":"PACK","h":20500,"j":424350,"k":"Potongan 10%","x":47150},{"t":"2020-04-18","m":4,"b":"Mitraku Fish Roll 250 Gr X 25 Pack","c":"Raisya Frozen","q":10,"s":"PACK","h":13000,"j":119600,"k":"Potongan 8%","x":10400},{"t":"2020-04-18","m":4,"b":"Mitraku Fish Roll 1000 Gr X 10 Pack","c":"Raisya Frozen","q":10,"s":"PACK","h":46000,"j":423200,"k":"Potongan 8%","x":36800},{"t":"2020-04-18","m":4,"b":"Mitraku Bakso Ikan Isi Tuna 500 Gr X 20","c":"Raisya Frozen","q":20,"s":"PACK","h":28000,"j":532000,"k":"Potongan 5%","x":28000},{"t":"2020-04-18","m":4,"b":"Mitraku Fish Tofu 1000 Gr X 10 Pack","c":"Raisya Frozen","q":10,"s":"PACK","h":49500,"j":470250,"k":"Potongan 5%","x":24750},{"t":"2020-04-18","m":4,"b":"Mitraku Bakso Ikan 200 Gr X 40 Pack","c":"Raisya Frozen","q":20,"s":"PACK","h":9900,"j":188100,"k":"Potongan 5%","x":9900},{"t":"2020-04-18","m":4,"b":"Mitraku Dumpling 500 Gr X 20 Pack","c":"Raisya Frozen","q":20,"s":"PACK","h":33600,"j":638400,"k":"Potongan 5%","x":33600},{"t":"2020-04-18","m":4,"b":"Mitraku Bakso Ikan Isi Ayam 500 Gr X 20","c":"Raisya Frozen","q":11,"s":"PACK","h":28000,"j":292600,"k":"Potongan 5%","x":15400},{"t":"2020-04-20","m":4,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":25,"s":"DUS","h":185000,"j":4500000,"k":"Potongan 3%","x":125000},{"t":"2020-04-20","m":4,"b":"Okey Stick 1000 Gr X 5 Pack","c":"Hite","q":8,"s":"DUS","h":185000,"j":1440000,"k":"Potongan 3%","x":40000},{"t":"2020-04-24","m":4,"b":"Mitraku Fish Roll 250 Gr X 25 Pack","c":"Adek Frozen","q":2,"s":"DUS","h":325000,"j":624000,"k":"Potongan 4%","x":26000},{"t":"2020-04-24","m":4,"b":"Bf Samosa 144 Gr X 40 Pack","c":"Adek Frozen","q":1,"s":"DUS","h":544000,"j":489600,"k":"Potongan 10%","x":54400},{"t":"2020-04-24","m":4,"b":"Bf Dimsum Siomay Reg-New 200 Gr X 48 Pak","c":"Adek Frozen","q":2,"s":"DUS","h":825600,"j":1486080,"k":"Potongan 10%","x":165120},{"t":"2020-04-24","m":4,"b":"Bf Lumpia Ayam 210 Gr X 32 Pack","c":"Adek Frozen","q":1,"s":"DUS","h":681600,"j":613440,"k":"Potongan 10%","x":68160},{"t":"2020-04-24","m":4,"b":"Bf Dimsum Siomay Reg-New 200 Gr X 48 Pak","c":"Adek Frozen","q":4,"s":"PACK","h":17200,"j":61920,"k":"Potongan 10%","x":6880},{"t":"2020-05-05","m":5,"b":"Mitraku Fish Cake Singapore 1000 Gr X 10","c":"Pak Erwin","q":13,"s":"PACK","h":52000,"j":621920,"k":"Potongan 8%","x":54080},{"t":"2020-05-05","m":5,"b":"Mitraku Scallop 400 Gr X 23 Pack","c":"Pak Erwin","q":3,"s":"PACK","h":18700,"j":47685,"k":"Potongan 15%","x":8415},{"t":"2020-05-05","m":5,"b":"Mitraku Fish Roll 1000 Gr X 10 Pack","c":"Pak Erwin","q":11,"s":"PACK","h":46000,"j":465520,"k":"Potongan 8%","x":40480},{"t":"2020-05-05","m":5,"b":"Mitraku Bakso Pilus Ikan 400Gr X 23 Pack","c":"Pak Erwin","q":11,"s":"PACK","h":14900,"j":150788,"k":"Potongan 8%","x":13112},{"t":"2020-05-05","m":5,"b":"Mitraku Chili&Celery Fishcake 500Gr X 20","c":"Pak Erwin","q":18,"s":"PACK","h":28900,"j":468180,"k":"Potongan 10%","x":52020},{"t":"2020-05-05","m":5,"b":"Mitraku Fish Cake 1000 Gr X 10 Pack","c":"Pak Erwin","q":4,"s":"PACK","h":57800,"j":208080,"k":"Potongan 10%","x":23120},{"t":"2020-05-05","m":5,"b":"Mitraku Fish Tofu 500 Gr X 20 Pack","c":"Pak Erwin","q":3,"s":"PACK","h":24900,"j":68724,"k":"Potongan 8%","x":5976},{"t":"2020-05-05","m":5,"b":"Mitraku Scallop 200 Gr X 40 Pack","c":"Pak Erwin","q":25,"s":"PACK","h":9900,"j":210375,"k":"Potongan 15%","x":37125},{"t":"2020-05-05","m":5,"b":"Mitraku Bakso Coin 500 Gr X 20 Pack","c":"Pak Erwin","q":1,"s":"PACK","h":16400,"j":15088,"k":"Potongan 8%","x":1312},{"t":"2020-05-05","m":5,"b":"Mitraku Fish Roll 250 Gr X 25 Pack","c":"Pak Erwin","q":26,"s":"PACK","h":13000,"j":310960,"k":"Potongan 8%","x":27040},{"t":"2020-05-13","m":5,"b":"Mitraku Fish Roll 250 Gr X 25 Pack","c":"Adek Frozen","q":3,"s":"DUS","h":325000,"j":936000,"k":"Potongan 4%","x":39000},{"t":"2020-05-13","m":5,"b":"Mitraku Bakso Pilus Ikan 400Gr X 23 Pack","c":"Pak Erwin","q":5,"s":"PACK","h":14900,"j":68540,"k":"Potongan 8%","x":5960},{"t":"2020-05-20","m":5,"b":"Bf Hakau Udang 222 Gr X 32 Pack","c":"Malindo Padang","q":35,"s":"PACK","h":27350,"j":861525,"k":"Potongan 10%","x":95725},{"t":"2020-05-20","m":5,"b":"Bf Dimsum Siomay Reg-New 200 Gr X 48 Pak","c":"Malindo Padang","q":48,"s":"PACK","h":18200,"j":786240,"k":"Potongan 10%","x":87360},{"t":"2020-05-20","m":5,"b":"Mitraku Scallop 400 Gr X 23 Pack","c":"Malindo Padang","q":33,"s":"PACK","h":18700,"j":524535,"k":"Potongan 15%","x":92565},{"t":"2020-05-22","m":5,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":20,"s":"DUS","h":185000,"j":3600000,"k":"Potongan 3%","x":100000},{"t":"2020-05-22","m":5,"b":"Okey Stick 1000 Gr X 5 Pack","c":"Hite","q":10,"s":"DUS","h":185000,"j":1800000,"k":"Potongan 3%","x":50000},{"t":"2020-05-30","m":5,"b":"Mitraku Bakso Pilus Ikan 400Gr X 23 Pack","c":"Pak Erwin","q":3,"s":"PACK","h":14900,"j":41124,"k":"Potongan 8%","x":3576},{"t":"2020-06-05","m":6,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":40,"s":"DUS","h":185000,"j":7200000,"k":"Potongan 3%","x":200000},{"t":"2020-06-05","m":6,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":5,"s":"DUS","h":185000,"j":900000,"k":"Potongan 3%","x":25000},{"t":"2020-06-09","m":6,"b":"Mitraku Chili&Celery Fishcake 500Gr X 20","c":"Pak Erwin","q":10,"s":"PACK","h":28900,"j":144500,"k":"Potongan 50%","x":144500},{"t":"2020-06-09","m":6,"b":"Mitraku Scallop 400 Gr X 23 Pack","c":"Pak Erwin","q":11,"s":"PACK","h":18700,"j":174845,"k":"Potongan 15%","x":30855},{"t":"2020-06-09","m":6,"b":"Mitraku Fish Roll 500 Gr X 20 Pack","c":"Pak Erwin","q":5,"s":"PACK","h":23400,"j":107640,"k":"Potongan 8%","x":9360},{"t":"2020-06-09","m":6,"b":"Mitraku Chili&Celery Fishcake 500Gr X 20","c":"Pak Erwin","q":6,"s":"PACK","h":28900,"j":86700,"k":"Potongan 50%","x":86700},{"t":"2020-06-16","m":6,"b":"Okey Stick 1000 Gr X 5 Pack","c":"Hite","q":10,"s":"DUS","h":185000,"j":1800000,"k":"Potongan 3%","x":50000},{"t":"2020-06-17","m":6,"b":"Mitraku Fish Roll 500 Gr X 20 Pack","c":"Edi / Seafood 99","q":20,"s":"PACK","h":24000,"j":441600,"k":"Potongan 8%","x":38400},{"t":"2020-06-23","m":6,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":14,"s":"DUS","h":185000,"j":2520000,"k":"Potongan 3%","x":70000},{"t":"2020-06-26","m":6,"b":"Mitraku Fish Roll 500 Gr X 20 Pack","c":"Pak Erwin","q":17,"s":"PACK","h":23400,"j":365976,"k":"Potongan 8%","x":31824},{"t":"2020-06-26","m":6,"b":"Mitraku Fish Roll 500 Gr X 20 Pack","c":"Adek Frozen","q":1,"s":"DUS","h":468000,"j":449280,"k":"Potongan 4%","x":18720},{"t":"2020-07-02","m":7,"b":"Okey Stick 1000 Gr X 5 Pack","c":"Hite","q":2,"s":"DUS","h":185000,"j":360000,"k":"Potongan 3%","x":10000},{"t":"2020-07-02","m":7,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":13,"s":"DUS","h":185000,"j":2340000,"k":"Potongan 3%","x":65000},{"t":"2020-07-13","m":7,"b":"Bf Hakau Udang 222 Gr X 32 Pack","c":"Anton","q":2,"s":"DUS","h":875200,"j":1575360,"k":"Potongan 10%","x":175040},{"t":"2020-07-25","m":7,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":15,"s":"DUS","h":185000,"j":2700000,"k":"Potongan 3%","x":75000},{"t":"2020-07-25","m":7,"b":"Okey Stick 1000 Gr X 5 Pack","c":"Hite","q":5,"s":"DUS","h":185000,"j":900000,"k":"Potongan 3%","x":25000},{"t":"2020-08-03","m":8,"b":"Mitraku Chili&Celery Fishcake 500Gr X 20","c":"Pak Erwin","q":27,"s":"PACK","h":28900,"j":390150,"k":"Potongan 50%","x":390150},{"t":"2020-08-03","m":8,"b":"Mitraku Scallop 200 Gr X 40 Pack","c":"Pak Erwin","q":51,"s":"PACK","h":9900,"j":252450,"k":"Potongan 50%","x":252450},{"t":"2020-08-03","m":8,"b":"Mitraku Fish Cake Singapore 1000 Gr X 10","c":"Pak Erwin","q":2,"s":"PACK","h":52000,"j":95680,"k":"Potongan 8%","x":8320},{"t":"2020-08-03","m":8,"b":"Mitraku Bakso Ikan Isi Tuna 500 Gr X 20","c":"Amanah Frozen","q":3,"s":"DUS","h":560000,"j":1596000,"k":"Potongan 5%","x":84000},{"t":"2020-08-03","m":8,"b":"Mitraku Bakso Ikan Isi Ayam 500 Gr X 20","c":"Amanah Frozen","q":3,"s":"DUS","h":560000,"j":1596000,"k":"Potongan 5%","x":84000},{"t":"2020-08-03","m":8,"b":"Mitraku Bakso Ikan Isi Keju 500 Gr X 20","c":"Amanah Frozen","q":3,"s":"DUS","h":560000,"j":1596000,"k":"Potongan 5%","x":84000},{"t":"2020-08-03","m":8,"b":"Mitraku Fish Tofu 500 Gr X 20 Pack","c":"Amanah Frozen","q":2,"s":"DUS","h":498000,"j":916320,"k":"Potongan 8%","x":79680},{"t":"2020-08-18","m":8,"b":"Okey Stick 1000 Gr X 5 Pack","c":"Hite","q":10,"s":"DUS","h":185000,"j":1800000,"k":"Potongan 3%","x":50000},{"t":"2020-09-03","m":9,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":15,"s":"DUS","h":185000,"j":2700000,"k":"Potongan 3%","x":75000},{"t":"2020-09-03","m":9,"b":"Okey Stick 1000 Gr X 5 Pack","c":"Hite","q":5,"s":"DUS","h":185000,"j":900000,"k":"Potongan 3%","x":25000},{"t":"2020-09-09","m":9,"b":"Miami 8 Ltr Neapolitan","c":"Wing","q":5,"s":"PAIL","h":120000,"j":550000,"k":"Potongan 8%","x":50000},{"t":"2020-09-09","m":9,"b":"Miami 8 Ltr Neapolitan Choco Chips","c":"Ulil","q":12,"s":"PAIL","h":125000,"j":1440000,"k":"Potongan 4%","x":60000},{"t":"2020-09-18","m":9,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":15,"s":"DUS","h":185000,"j":2700000,"k":"Potongan 3%","x":75000},{"t":"2020-09-18","m":9,"b":"Okey Stick 1000 Gr X 5 Pack","c":"Hite","q":15,"s":"DUS","h":185000,"j":2700000,"k":"Potongan 3%","x":75000},{"t":"2020-09-29","m":9,"b":"Okey Stick 1000 Gr X 5 Pack","c":"Hite","q":5,"s":"DUS","h":185000,"j":900000,"k":"Potongan 3%","x":25000},{"t":"2020-09-29","m":9,"b":"Okey Stick 500 Gr X 10 Pack","c":"Hite","q":20,"s":"DUS","h":185000,"j":3600000,"k":"Potongan 3%","x":100000}]},"batas":90474036.25,"q1":10810342.5,"q3":42675820.0,"median":20628000.0,"lonjakan":[{"t":"2020-05-08","o":93943900,"top":"Minaku Otak Otak 500 Gr X 20 Pack","tc":"Firdon","tj":10850000,"tq":35,"ts":"DUS"},{"t":"2020-06-03","o":97545350,"top":"Minaku Otak Otak 500 Gr X 20 Pack","tc":"Adek Frozen","tj":7750000,"tq":25,"ts":"DUS"},{"t":"2020-06-26","o":188488506,"top":"Minaku Otak Otak 500 Gr X 20 Pack","tc":"Firdon","tj":21700000,"tq":70,"ts":"DUS"},{"t":"2020-07-29","o":163213698,"top":"Minaku Otak Otak 500 Gr X 20 Pack","tc":"Firdon","tj":20150000,"tq":65,"ts":"DUS"},{"t":"2020-08-03","o":129031800,"top":"Minaku Otak Otak 500 Gr X 20 Pack","tc":"Pak Sutarmuji","tj":63200000,"tq":200,"ts":"DUS"},{"t":"2020-08-18","o":144880990,"top":"Okey Sosis 1000 Gr X 10 Pack","tc":"Hite","tj":13200000,"tq":40,"ts":"DUS"},{"t":"2020-09-16","o":106766300,"top":"Minaku Otak Otak 500 Gr X 20 Pack","tc":"Firdon","tj":9300000,"tq":30,"ts":"DUS"}]};
+
+/* ---------- format Indonesia ---------- */
+const NF0 = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
+const NF1 = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const NF2 = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const BULAN_F = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const BULAN_S = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const HARI_F = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+function rp(v, opt = {}) {
+  const a = Math.abs(v), s = v < 0 ? '−' : '';
+  if (a >= 1e9) return s + 'Rp' + NF2.format(a / 1e9) + ' M';
+  if (a >= 1e6) return s + 'Rp' + ((a >= 1e8 && !opt.dec) ? NF0.format(a / 1e6) : NF1.format(a / 1e6)) + ' jt';
+  if (a >= 1e3) return s + 'Rp' + NF0.format(a / 1e3) + ' rb';
+  return s + 'Rp' + NF0.format(a);
+}
+const rpFull = v => 'Rp' + NF0.format(v);
+function axisRp(v) { return v === 0 ? '0' : v >= 1e9 ? NF1.format(v / 1e9) + ' M' : v >= 1e6 ? NF0.format(v / 1e6) + ' jt' : NF0.format(v); }
+const pct = (v, d = 1) => (d === 0 ? NF0 : NF1).format(v) + '%';
+const num = v => NF0.format(v);
+const tglPendek = iso => { const d = new Date(iso + 'T00:00:00'); return d.getDate() + ' ' + BULAN_S[d.getMonth()]; };
+const tglPanjang = iso => { const d = new Date(iso + 'T00:00:00'); return HARI_F[d.getDay()] + ', ' + d.getDate() + ' ' + BULAN_F[d.getMonth()]; };
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+/* ---------- tooltip ---------- */
+const TT = (() => {
+  const box = el('div', 'tt'); box.hidden = true; box.setAttribute('role', 'status'); document.body.appendChild(box);
+  function fill(title, rows) {
+    box.replaceChildren(); if (title) box.appendChild(el('div', 'tt-title', title));
+    rows.forEach(r => { const row = el('div', 'tt-row'); const k = el('span', 'tt-key'); k.style.background = r.c || 'transparent'; if (!r.c) k.style.visibility = 'hidden';
+      row.append(k, el('strong', 'tt-val', r.v), el('span', 'tt-lab', r.l || '')); box.appendChild(row); });
+    box.hidden = false;
+  }
+  function place(x, y) { const r = box.getBoundingClientRect(); let l = x + 14, t = y + 14;
+    if (l + r.width > innerWidth - 10) l = x - r.width - 14; if (t + r.height > innerHeight - 10) t = y - r.height - 14;
+    box.style.left = Math.max(10, l) + 'px'; box.style.top = Math.max(10, t) + 'px'; }
+  return { show(e, t, r) { fill(t, r); place(e.clientX, e.clientY); },
+           showAt(n, t, r) { fill(t, r); const b = n.getBoundingClientRect(); place(b.left + b.width / 2, b.top); },
+           hide() { box.hidden = true; } };
+})();
+function tip(sel, fn) {
+  sel.attr('tabindex', 0)
+    .on('pointerenter pointermove', function (e, d) { const t = fn(d); TT.show(e, t[0], t[1]); this.classList.add('is-hot'); })
+    .on('pointerleave blur', function () { TT.hide(); this.classList.remove('is-hot'); })
+    .on('focus', function (e, d) { const t = fn(d); TT.showAt(this, t[0], t[1]); this.classList.add('is-hot'); });
+}
+function responsive(node, draw) {
+  let w = 0, raf = 0; const run = () => { const nw = Math.round(node.clientWidth); if (nw && nw !== w) { w = nw; draw(nw); } };
+  new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(run); }).observe(node);
+  run(); return () => { w = 0; run(); };
+}
+function colPath(x, y, w, h, r = 4) { if (h <= 0) return ''; r = Math.min(r, w / 2, h);
+  return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`; }
+function svgFor(node, w, h) { const s = d3.select(node).selectAll('svg').data([0]).join('svg').attr('viewBox', `0 0 ${w} ${h}`).attr('height', h); s.selectAll('*').remove(); return s; }
+
+/* ---------- state + filter ---------- */
+let current = 'all';
+const S = () => DATA.slices[current];
+const monthIdx = m => DATA.bulan.findIndex(b => String(b.m) === String(m));
+const periodName = () => current === 'all' ? '6 bulan' : DATA.bulan[monthIdx(current)].f;
+const inPeriod = r => current === 'all' || String(r.m) === current;
+const filter = document.getElementById('filter');
+[{k:'all', l:'Semua'}].concat(DATA.bulan.map(b => ({k:String(b.m), l:b.l}))).forEach(o => {
+  const b = el('button', null, o.l); b.type = 'button'; b.setAttribute('role', 'radio'); b.dataset.k = o.k; b.onclick = () => setPeriod(o.k);
+  b.onkeydown = e => { if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return; const bs = [...filter.children]; const n = bs[(bs.indexOf(b) + (e.key === 'ArrowRight' ? 1 : -1) + bs.length) % bs.length]; n.focus(); n.click(); };
+  filter.appendChild(b);
+});
+function setPeriod(k) { current = k; try { localStorage.setItem('ffS-period', k); } catch (e) {} renderAll(); }
+
+/* ---------- KPI ---------- */
+function delta(cur, prev) {
+  const d = (cur - prev) / prev * 100, up = d >= 0;
+  return el('span', 'delta ' + (up ? 'up' : 'down'), (up ? '▲ ' : '▼ ') + pct(Math.abs(d)));
+}
+function meta(id, parts) { document.getElementById(id).replaceChildren(...parts.map(p => typeof p === 'string' ? el('span', null, p) : p)); }
+function renderKPI() {
+  const k = S().kpi, all = current === 'all', i = monthIdx(current);
+  const prev = (!all && i > 0) ? DATA.slices[String(DATA.bulan[i - 1].m)].kpi : null;
+  document.getElementById('k-omzet').textContent = rp(k.omzet);
+  document.getElementById('k-trx').textContent = num(k.trx);
+  document.getElementById('k-cust').textContent = num(k.pelanggan) + ' orang';
+  document.getElementById('k-avg').textContent = rp(k.rata_trx);
+  if (prev) {
+    const vs = 'dibanding ' + DATA.bulan[i - 1].f;
+    meta('k-omzet-m', [delta(k.omzet, prev.omzet), vs]); meta('k-trx-m', [delta(k.trx, prev.trx), vs]);
+    meta('k-cust-m', [delta(k.pelanggan, prev.pelanggan), vs]); meta('k-avg-m', [delta(k.rata_trx, prev.rata_trx), vs]);
+  } else {
+    meta('k-omzet-m', ['sekitar ' + rp(k.rata_hari, {dec:true}) + ' per hari']);
+    meta('k-trx-m', ['sekitar ' + num(Math.round(k.trx / k.hari)) + ' transaksi per hari']);
+    meta('k-cust-m', [all ? num(DATA.aktif6) + ' orang belanja tiap bulan' : 'bulan pertama data']);
+    meta('k-avg-m', ['tapi kebanyakan cuma ' + rp(k.median) + ' (median)']);
+  }
+  document.getElementById('sub').textContent = current === 'all'
+    ? `Ringkasan 6 bulan: ${num(k.sku)} produk dari ${num(k.merek)} merek, dijual ke ${num(k.pelanggan)} pelanggan.`
+    : `Bulan ${periodName()} 2020: ${num(k.sku)} produk terjual ke ${num(k.pelanggan)} pelanggan.`;
+}
+
+/* ---------- yang perlu kamu tahu ---------- */
+function renderInsight() {
+  const s = S(), tot = s.kpi.omzet, p = EXTRA.pareto[current];
+  const top5 = d3.sum(s.pelanggan.slice(0, 5), d => d.o) / tot * 100;
+  const kat = s.kat.slice().sort((a, b) => b.o - a.o)[0];
+  const items = [
+    ['80/20', `Cuma <b>${num(p.k80)} dari ${num(p.n)} produk</b> yang menghasilkan 80% uang masuk. Produk-produk inilah yang stoknya jangan sampai kosong.`],
+    ['5', `<b>5 pelanggan terbesar</b> menyumbang <b>${pct(top5, 0)}</b> omzet. Kalau satu saja berhenti belanja, penjualan bisa turun cukup terasa.`],
+    ['#1', `<b>${kat.s}</b> jadi jenis produk paling laku, sekitar <b>${pct(kat.o / tot * 100, 0)}</b> dari semua penjualan.`]
+  ];
+  document.getElementById('insight').replaceChildren(...items.map(([ic, html]) => {
+    const box = el('div'), q = el('p'); box.append(el('span', 'ic', ic));
+    // html dibangun dari angka/teks internal, bukan input pengguna
+    q.innerHTML = html; box.appendChild(q); return box;
+  }));
+}
+
+/* ---------- tren bulanan ---------- */
+const nB = document.getElementById('ch-bulanan');
+const drawBulanan = responsive(nB, w => {
+  const h = 260, m = {t:26, r:8, b:48, l:44};
+  const rows = DATA.bulan.map(b => ({...b, o: DATA.slices[String(b.m)].kpi.omzet, n: DATA.slices[String(b.m)].kpi.trx}));
+  rows.forEach((r, i) => r.mom = i ? (r.o - rows[i - 1].o) / rows[i - 1].o * 100 : null);
+  const x = d3.scaleBand().domain(rows.map(r => r.l)).range([m.l, w - m.r]).paddingInner(.4).paddingOuter(.2);
+  const y = d3.scaleLinear().domain([0, d3.max(rows, r => r.o)]).nice(4).range([h - m.b, m.t]);
+  const svg = svgFor(nB, w, h);
+  y.ticks(4).forEach(t => { svg.append('line').attr('class', t ? 'gridline' : 'baseline').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(t)).attr('y2', y(t));
+    svg.append('text').attr('x', m.l - 8).attr('y', y(t)).attr('dy', '.32em').attr('text-anchor', 'end').text(axisRp(t)); });
+  const bw = Math.min(52, x.bandwidth()), sel = current === 'all' ? null : current;
+  const on = r => sel == null || String(r.m) === sel;
+  const g = svg.append('g').selectAll('g').data(rows).join('g');
+  g.append('path').attr('d', r => colPath(x(r.l) + (x.bandwidth() - bw) / 2, y(r.o), bw, y(0) - y(r.o), 6))
+    .style('fill', r => on(r) ? 'var(--accent)' : 'var(--dim)').style('cursor', 'pointer')
+    .call(tip, r => [r.f + ' 2020', [{v: rp(r.o, {dec:true}), l:'uang masuk', c:'var(--accent)'}, {v: num(r.n), l:'transaksi'}]])
+    .on('click', (e, r) => setPeriod(String(r.m) === current ? 'all' : String(r.m)));
+  g.append('text').attr('class', r => on(r) ? 'lbl-strong' : 'lbl').attr('x', r => x(r.l) + x.bandwidth() / 2).attr('y', r => y(r.o) - 8).attr('text-anchor', 'middle')
+    .text(r => x.bandwidth() < 60 ? rp(r.o).replace('Rp', '') : rp(r.o));
+  g.append('text').attr('class', 'lbl').attr('x', r => x(r.l) + x.bandwidth() / 2).attr('y', h - m.b + 18).attr('text-anchor', 'middle').style('font-size', '12px').text(r => r.l);
+  g.append('text').attr('x', r => x(r.l) + x.bandwidth() / 2).attr('y', h - m.b + 35).attr('text-anchor', 'middle').style('font-weight', 700)
+    .style('fill', r => r.mom == null ? 'var(--muted)' : r.mom >= 0 ? 'var(--up)' : 'var(--down)')
+    .text(r => r.mom == null ? 'awal' : (r.mom >= 0 ? '▲ ' : '▼ ') + pct(Math.abs(r.mom)));
+});
+
+/* ---------- daftar peringkat ---------- */
+function renderRank(id, items, sub, tot, n, numbered = true) {
+  const mx = items[0].o;
+  document.getElementById(id).replaceChildren(...items.slice(0, n).map((it, i) => {
+    const li = el('li'), nm = el('span', 'nm', it.n); nm.title = it.n; if (sub && sub(it)) nm.appendChild(el('small', null, sub(it)));
+    const v = el('span', 'v', rp(it.o)); v.appendChild(el('span', 'pc', pct(it.o / tot * 100)));
+    const bar = el('span', 'bar'), f = el('i'); f.style.width = (it.o / mx * 100) + '%'; bar.appendChild(f);
+    if (numbered) li.append(el('span', 'no', i + 1)); li.append(nm, v, bar); return li;
+  }));
+}
+function renderRanks() {
+  const s = S(), tot = s.kpi.omzet;
+  renderRank('rk-kat', s.kat.map(k => ({n: k.s, o: k.o})).sort((a, b) => b.o - a.o), null, d3.sum(s.kat, k => k.o), 6, false);
+  document.getElementById('kat-note').textContent = 'Bagian dari total uang masuk · ' + periodName();
+  renderRank('rk-produk', s.produk, it => it.b, tot, 5);
+  renderRank('rk-pelanggan', s.pelanggan, it => num(it.t) + ' transaksi', tot, 5);
+}
+
+/* ---------- Pareto (kurva kumulatif; satu sumbu %) ---------- */
+const nP = document.getElementById('ch-pareto');
+const drawPareto = responsive(nP, w => {
+  const p = EXTRA.pareto[current], h = 230, m = {t:12, r:10, b:34, l:36};
+  const pts = [[0, 0]].concat(p.cum.map((c, i) => [(i + 1) / p.n * 100, c * 100]));
+  const x = d3.scaleLinear().domain([0, 100]).range([m.l, w - m.r]);
+  const y = d3.scaleLinear().domain([0, 100]).range([h - m.b, m.t]);
+  const svg = svgFor(nP, w, h);
+  [0, 50, 80, 100].forEach(t => { svg.append('line').attr('class', t ? 'gridline' : 'baseline').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(t)).attr('y2', y(t));
+    svg.append('text').attr('x', m.l - 6).attr('y', y(t)).attr('dy', '.32em').attr('text-anchor', 'end').text(t + '%'); });
+  [0, 25, 50, 75, 100].forEach(t => svg.append('text').attr('x', x(t)).attr('y', h - m.b + 16).attr('text-anchor', t === 0 ? 'start' : t === 100 ? 'end' : 'middle').text(t + '%'));
+  svg.append('text').attr('x', (m.l + w - m.r) / 2).attr('y', h - 2).attr('text-anchor', 'middle').text('% jumlah produk (dari yang paling laku)');
+  const kx = x(p.k80 / p.n * 100);
+  svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', kx - m.l).attr('height', h - m.b - m.t).style('fill', 'var(--accent-soft)');
+  svg.append('path').datum(pts).attr('d', d3.line().x(d => x(d[0])).y(d => y(d[1]))).style('fill', 'none').style('stroke', 'var(--accent)').attr('stroke-width', 2).attr('stroke-linejoin', 'round');
+  svg.append('circle').attr('cx', kx).attr('cy', y(p.cum[p.k80 - 1] * 100)).attr('r', 4).style('fill', 'var(--accent)').style('stroke', 'var(--panel)').attr('stroke-width', 2);
+  svg.append('text').attr('class', 'lbl-strong').attr('x', kx + 8).attr('y', y(p.cum[p.k80 - 1] * 100) + 16).text(`${num(p.k80)} produk = 80% omzet`);
+  document.getElementById('par-note').textContent = `Area biru = produk "kelas A" (${pct(p.k80 / p.n * 100, 0)} dari semua produk) · ${periodName()}`;
+  const cross = svg.append('line').attr('y1', m.t).attr('y2', h - m.b).style('stroke', 'var(--ink-2)').style('opacity', 0);
+  const dot = svg.append('circle').attr('r', 4).style('fill', 'var(--accent)').style('stroke', 'var(--panel)').attr('stroke-width', 2).style('opacity', 0);
+  svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', w - m.l - m.r).attr('height', h - m.b - m.t).style('fill', 'transparent')
+    .on('pointermove', function (e) { const [mx] = d3.pointer(e, this); const i = Math.max(1, Math.min(p.n, Math.round(x.invert(mx) / 100 * p.n))); const d = pts[i];
+      cross.attr('x1', x(d[0])).attr('x2', x(d[0])).style('opacity', .4); dot.attr('cx', x(d[0])).attr('cy', y(d[1])).style('opacity', 1);
+      TT.show(e, `${num(i)} produk paling laku`, [{v: pct(d[1]), l:'dari total omzet', c:'var(--accent)'}, {v: pct(d[0]), l:'dari jumlah produk'}]); })
+    .on('pointerleave', () => { cross.style('opacity', 0); dot.style('opacity', 0); TT.hide(); });
+});
+
+/* ---------- pelanggan baru vs lama ---------- */
+const nC = document.getElementById('ch-cohort');
+const drawCohort = responsive(nC, w => {
+  const h = 230, m = {t:22, r:4, b:26, l:4};
+  const rows = EXTRA.cohort.map(c => ({...c, ...DATA.bulan[monthIdx(c.m)]}));
+  const x = d3.scaleBand().domain(rows.map(r => r.l)).range([m.l, w - m.r]).paddingInner(.35).paddingOuter(.1);
+  const y = d3.scaleLinear().domain([0, d3.max(rows, r => r.baru + r.lama)]).nice().range([h - m.b, m.t]);
+  const svg = svgFor(nC, w, h), bw = Math.min(40, x.bandwidth());
+  svg.append('line').attr('class', 'baseline').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(0)).attr('y2', y(0));
+  rows.forEach(r => {
+    const x0 = x(r.l) + (x.bandwidth() - bw) / 2, g = svg.append('g').style('opacity', inPeriod(r) ? 1 : .35).datum(r);
+    if (r.lama) g.append('rect').attr('x', x0).attr('y', y(r.lama)).attr('width', bw).attr('height', y(0) - y(r.lama)).style('fill', 'var(--accent)');
+    const top = y(r.lama + r.baru), segH = y(r.lama) - top - (r.lama ? 2 : 0);
+    g.append('path').attr('d', colPath(x0, top, bw, Math.max(0, segH), 5)).style('fill', 'var(--accent-mid)');
+    g.append('text').attr('class', 'lbl').attr('x', x0 + bw / 2).attr('y', top - 7).attr('text-anchor', 'middle').text(r.baru + r.lama);
+    g.append('text').attr('class', 'lbl').attr('x', x0 + bw / 2).attr('y', h - 8).attr('text-anchor', 'middle').text(r.l);
+    g.append('rect').attr('x', x(r.l)).attr('y', m.t).attr('width', x.bandwidth()).attr('height', h - m.b - m.t).style('fill', 'transparent')
+      .call(tip, d => [d.f + ' 2020', [{v: num(d.lama) + ' orang', l:'pelanggan lama · ' + rp(d.ol), c:'var(--accent)'}, {v: num(d.baru) + ' orang', l:'pelanggan baru · ' + rp(d.ob), c:'var(--accent-mid)'}]]);
+  });
+});
+
+/* ---------- pola hari ---------- */
+const nD = document.getElementById('ch-hari');
+const drawHari = responsive(nD, w => {
+  const h = 230, m = {t:22, r:4, b:26, l:4}, rows = S().dow;
+  const x = d3.scaleBand().domain(rows.map(r => r.h)).range([m.l, w - m.r]).paddingInner(.35).paddingOuter(.1);
+  const y = d3.scaleLinear().domain([0, d3.max(rows, r => r.avg || 0) * 1.05]).range([h - m.b, m.t]);
+  const svg = svgFor(nD, w, h), bw = Math.min(36, x.bandwidth()), mx = d3.max(rows, r => r.avg || 0);
+  svg.append('line').attr('class', 'baseline').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(0)).attr('y2', y(0));
+  rows.forEach(r => {
+    const cx = x(r.h) + x.bandwidth() / 2;
+    if (r.h === 'Minggu' && (r.n || 0) <= 1) svg.append('text').attr('x', cx).attr('y', y(0) - 8).attr('text-anchor', 'middle').text('libur');
+    else if (r.avg != null) {
+      svg.append('path').datum(r).attr('d', colPath(cx - bw / 2, y(r.avg), bw, y(0) - y(r.avg), 5)).style('fill', r.avg >= mx * .8 ? 'var(--accent)' : 'var(--dim)')
+        .call(tip, d => [d.h, [{v: rp(d.avg, {dec:true}), l:'rata-rata per hari', c:'var(--accent)'}, {v: num(d.n), l:'hari buka'}]]);
+      svg.append('text').attr('class', 'lbl').attr('x', cx).attr('y', y(r.avg) - 7).attr('text-anchor', 'middle').text(NF0.format(r.avg / 1e6) + ' jt');
+    }
+    svg.append('text').attr('class', 'lbl').attr('x', cx).attr('y', h - 8).attr('text-anchor', 'middle').text(r.h.slice(0, 3));
+  });
+});
+
+/* ---------- KEJANGGALAN 1: lonjakan harian (aturan IQR) ---------- */
+const LONJ = new Map(ANOM.lonjakan.map(d => [d.t, d]));
+const nL = document.getElementById('ch-lonjakan');
+const drawLonjakan = responsive(nL, w => {
+  const h = 280, m = {t:30, r:10, b:26, l:46};
+  const rows = DATA.harian.map(d => ({...d, date: new Date(d.t + 'T00:00:00'), m: +d.t.slice(5, 7)})).filter(inPeriod);
+  const x = d3.scaleBand().domain(rows.map(d => d.t)).range([m.l, w - m.r]).paddingInner(rows.length > 60 ? .2 : .3);
+  const y = d3.scaleLinear().domain([0, Math.max(d3.max(rows, d => d.o), ANOM.batas * 1.1)]).nice(4).range([h - m.b, m.t]);
+  const svg = svgFor(nL, w, h);
+  y.ticks(4).forEach(t => { svg.append('line').attr('class', t ? 'gridline' : 'baseline').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(t)).attr('y2', y(t));
+    svg.append('text').attr('x', m.l - 8).attr('y', y(t)).attr('dy', '.32em').attr('text-anchor', 'end').text(axisRp(t)); });
+  // pita "normal" = Q1–Q3
+  svg.append('rect').attr('x', m.l).attr('width', w - m.l - m.r).attr('y', y(ANOM.q3)).attr('height', y(ANOM.q1) - y(ANOM.q3)).style('fill', 'var(--accent-soft)');
+  const bw = Math.max(1, Math.min(16, x.bandwidth()));
+  svg.append('g').selectAll('path').data(rows.filter(d => d.o > 0)).join('path')
+    .attr('d', d => colPath(x(d.t) + (x.bandwidth() - bw) / 2, y(d.o), bw, y(0) - y(d.o), bw > 6 ? 3 : 1))
+    .style('fill', d => LONJ.has(d.t) ? 'var(--warn)' : 'var(--dim)')
+    .call(tip, d => { const a = LONJ.get(d.t), r = [{v: rp(d.o, {dec:true}), l:'uang masuk', c: a ? 'var(--warn)' : 'var(--dim)'}, {v: num(d.n), l:'transaksi'}];
+      if (a) r.push({v: (d.o / ANOM.median).toFixed(1).replace('.', ',') + '×', l:'dari hari biasa (median)'}, {v: rp(a.tj, {dec:true}), l:`terbesar: ${a.tc}, ${num(a.tq)} ${a.ts.toLowerCase()} ${a.top}`});
+      return [tglPanjang(d.t) + (a ? ' · tidak biasa' : ''), r]; });
+  // garis batas wajar
+  svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(ANOM.batas)).attr('y2', y(ANOM.batas)).style('stroke', 'var(--warn)').attr('stroke-width', 1.5);
+  svg.append('text').attr('class', 'lbl-warn').attr('x', m.l + 6).attr('y', y(ANOM.batas) - 6).attr('text-anchor', 'start').text('batas wajar ' + rp(ANOM.batas));
+  // label tiap lonjakan
+  rows.filter(d => LONJ.has(d.t)).forEach(d => {
+    const cx = x(d.t) + x.bandwidth() / 2;
+    svg.append('text').attr('class', 'lbl-warn').attr('x', cx).attr('y', y(d.o) - 7).attr('text-anchor', 'middle').text(tglPendek(d.t));
+  });
+  // sumbu x
+  rows.forEach(d => {
+    const show = current === 'all' ? d.date.getDate() === 1 : (d.date.getDate() === 1 || d.date.getDate() % 5 === 0);
+    if (show) svg.append('text').attr('class', current === 'all' ? 'lbl' : null).attr('x', x(d.t) + (current === 'all' ? 0 : x.bandwidth() / 2)).attr('y', h - 6)
+      .attr('text-anchor', current === 'all' ? 'start' : 'middle').text(current === 'all' ? BULAN_F[d.date.getMonth()] : d.date.getDate());
+  });
+  const n = rows.filter(d => LONJ.has(d.t)).length;
+  document.getElementById('lonj-note').textContent = n
+    ? `Biasanya penjualan sehari ada di kisaran ${rp(ANOM.q1)}–${rp(ANOM.q3)}. Ada ${n} hari yang melewati batas wajar (${periodName()}). Arahkan kursor ke batang kuning untuk melihat pesanan terbesarnya.`
+    : `Tidak ada hari yang melewati batas wajar ${rp(ANOM.batas)} di ${periodName()}.`;
+});
+
+/* ---------- KEJANGGALAN 2: catatan transaksi ---------- */
+const JENIS = [
+  {k:'nol', t:'Barang keluar tapi harga Rp0', sat:'baris',
+   d: (r, x) => `nilai barang ± <b>${rp(x)}</b> kalau dijual normal`,
+   why: '<b>Kenapa aneh?</b> Barang tercatat keluar tapi harga dan jumlahnya Rp0. Sebagian memang sampel/promo, tapi banyak yang atas nama pelanggan <b>CASH</b> dengan jumlah besar (puluhan dus). Ini perlu dicek: apakah lupa diisi harganya, atau barangnya benar-benar keluar gratis?'},
+  {k:'selisih', t:'Jumlah ≠ qty × harga', sat:'baris',
+   d: (r, x) => `total selisih <b>${rp(x)}</b> (potongan harga)`,
+   why: '<b>Kenapa aneh?</b> Kolom JUMLAH lebih kecil dari QTY × HARGA. Kemungkinan ada diskon (umumnya 3–8%, bahkan ada yang 50%), tapi diskonnya tidak dicatat di kolom tersendiri. Sebaiknya dibuat kolom "diskon" supaya jelas.'}
+];
+let jenisAktif = 'nol', tampilSemua = false;
+const atiles = document.getElementById('atiles');
+function rowsOf(k) { return ANOM.anom[k].filter(inPeriod).slice().sort((a, b) => (b.x || b.j) - (a.x || a.j)); }
+function renderAnom() {
+  let totalBaris = 0;
+  atiles.replaceChildren(...JENIS.map(j => {
+    const rs = rowsOf(j.k), x = d3.sum(rs, r => r.x || 0); totalBaris += rs.length;
+    const b = el('button', 'atile'); b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', j.k === jenisAktif);
+    b.onclick = () => { jenisAktif = j.k; tampilSemua = false; renderAnom(); };
+    const big = el('span', 'big', num(rs.length)); big.appendChild(el('small', null, j.sat));
+    const d = el('span', 'd'); d.innerHTML = rs.length ? j.d(rs, x) : 'tidak ada di periode ini';
+    b.append(el('span', 't', j.t), big, d); return b;
+  }));
+  document.getElementById('anom-total').textContent = `${num(totalBaris)} baris perlu dicek · ${periodName()}`;
+  const j = JENIS.find(j => j.k === jenisAktif), rs = rowsOf(j.k);
+  document.getElementById('why').innerHTML = j.why;
+  const shown = tampilSemua ? rs : rs.slice(0, 8), tb = document.getElementById('atbody');
+  if (!rs.length) { const tr = el('tr'), td = el('td', 'empty', 'Tidak ada catatan janggal jenis ini di ' + periodName() + '.'); td.colSpan = 7; tr.appendChild(td); tb.replaceChildren(tr); }
+  else tb.replaceChildren(...shown.map(r => {
+    const tr = el('tr'), ket = el('td'); ket.appendChild(el('span', 'pill', r.k));
+    tr.append(el('td', null, tglPendek(r.t)), el('td', null, r.b), el('td', null, r.c), el('td', 'n', num(r.q) + ' ' + r.s.toLowerCase()),
+      el('td', 'n', rpFull(r.h)), el('td', 'n', rpFull(r.j)), ket);
+    return tr;
+  }));
+  const more = document.getElementById('more');
+  more.hidden = rs.length <= 8;
+  more.textContent = tampilSemua ? 'Tampilkan lebih sedikit' : `Tampilkan semua (${num(rs.length)} baris)`;
+  more.onclick = () => { tampilSemua = !tampilSemua; renderAnom(); };
+}
+
+function renderAll() {
+  [...filter.children].forEach(b => b.setAttribute('aria-checked', b.dataset.k === current));
+  tampilSemua = false;
+  renderKPI(); renderInsight(); renderRanks(); drawBulanan(); drawPareto(); drawCohort(); drawHari(); drawLonjakan(); renderAnom();
+}
+try { const s = localStorage.getItem('ffS-period'); if (s && DATA.slices[s]) current = s; } catch (e) {}
+renderAll();
+</script>
+</body>
+</html>
