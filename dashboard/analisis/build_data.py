@@ -20,6 +20,9 @@ Aturan utama:
 import argparse
 import json
 import re
+import sys
+from collections import Counter
+from itertools import combinations
 from pathlib import Path
 
 import numpy as np
@@ -95,6 +98,8 @@ def nama_pendek(raw):
 
 
 def main():
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
     ap = argparse.ArgumentParser()
     ap.add_argument('--dataset', default=str(Path(__file__).resolve().parents[2] / 'dataset'))
     ap.add_argument('--out', default=str(Path(__file__).resolve().parents[1] / 'assets' / 'data.js'))
@@ -113,6 +118,8 @@ def main():
 
     total = int(df['JUMLAH'].sum())
     bulan_total = df.groupby('BULAN')['JUMLAH'].sum()
+    nilai_bruto = df['QTY'] * df['HARGA']
+    selisih_bruto_bersih = (nilai_bruto - df['JUMLAH']).clip(lower=0)
 
     # ---------- 1. Omzet bulanan: Otak-Otak vs produk lain ----------
     otak = df[df['JENIS'] == 'Otak-Otak']
@@ -161,6 +168,43 @@ def main():
 
     per_pel = r.groupby('PELANGGAN').agg(o=('JUMLAH', 'sum'), m=('BULAN', 'nunique'))
 
+    # ---------- 3b. Komposisi produk & keranjang harian pelanggan ----------
+    # Tidak ada nomor nota pada ekspor sumber. Untuk melihat produk yang dibeli
+    # bersamaan, gunakan pelanggan-hari sebagai proksi keranjang dan jelaskan batasannya.
+    category_sales = (df.groupby('JENIS')['JUMLAH'].sum()
+                      .sort_values(ascending=False))
+    category_mix = [{'j': j, 'o': int(o), 'share': float(o / total)}
+                    for j, o in category_sales.items()]
+
+    baskets = []
+    for (date, customer), g in r.groupby(['TGL', 'PELANGGAN'], sort=False):
+        categories = sorted(set(g['JENIS']) - {'Lainnya'})
+        # Satukan dua kelompok ini agar sejalan dengan Program 2 di dashboard.
+        pair_categories = sorted(set(
+            'Olahan Ikan' if j in ('Bakso Ikan', 'Olahan Ikan Lain') else j
+            for j in categories
+        ))
+        baskets.append({'tgl': date, 'pelanggan': customer, 'bulan': int(g['BULAN'].iloc[0]),
+                        'o': float(g['JUMLAH'].sum()), 'jenis': categories,
+                        'pair_jenis': pair_categories})
+    basket_df = pd.DataFrame(baskets)
+    pair_count = Counter()
+    for categories in basket_df['pair_jenis']:
+        pair_count.update(combinations(categories, 2))
+    focus_pair = tuple(sorted(('Otak-Otak', 'Olahan Ikan')))
+    top_pairs = pair_count.most_common(4)
+    if focus_pair in pair_count and all(pair != focus_pair for pair, _ in top_pairs):
+        top_pairs.append((focus_pair, pair_count[focus_pair]))
+
+    with_otak = basket_df[basket_df['jenis'].map(lambda x: 'Otak-Otak' in x)]
+    with_otak_ikan = with_otak[with_otak['jenis'].map(
+        lambda x: any(j in x for j in ('Bakso Ikan', 'Olahan Ikan Lain')))]
+    basket_monthly = []
+    for b in range(4, 10):
+        bm = basket_df[basket_df['bulan'] == b]
+        basket_monthly.append({'m': NAMA_BULAN[b], 'n': len(bm),
+                               'median': float(bm['o'].median())})
+
     # ---------- 4. Program 1: Es krim ----------
     # Pembanding = toko rutin yang menjual es krim DAN frozen food lain (pelanggan khusus
     # es krim tidak dipakai, karena porsi es krim mereka pasti 100%).
@@ -195,6 +239,7 @@ def main():
     near = pm[(pm['r'] >= BATAS_DUS) & (pm['r'] < 1)].copy()
     near['tambah'] = (near['per'] - near['qty']) * near['harga']
     p3_cust = near.groupby('PELANGGAN')['tambah'].sum() / N_BULAN
+    p3_events = near.groupby('PELANGGAN').size()
     contoh = (near.merge(df[['KODEBARA', 'NAMABARA']].drop_duplicates('KODEBARA'), on='KODEBARA')
               .groupby('NAMABARA').agg(n=('tambah', 'size'), cust=('PELANGGAN', 'nunique'))
               .sort_values('n', ascending=False).head(5))
@@ -208,16 +253,33 @@ def main():
     targets = []
     for p in sorted(set().union(*[set(v) for v in pot.values()])):
         row = per_pel.loc[p]
+        signal = {}
+        if p in p1_targets:
+            signal['1'] = {'reason': 'no_ice_cream'}
+        if p in p2.index:
+            signal['2'] = {'fish_ratio': float(p2.loc[p, 'rasio'])}
+        if p in p3_events.index:
+            signal['3'] = {'near_events': int(p3_events.loc[p])}
         targets.append({'n': p, 'pm': int(row['o'] / N_BULAN), 'm': int(row['m']),
-                        'p': {str(k): int(round(v[p])) for k, v in pot.items() if p in v}})
+                        'p': {str(k): int(round(v[p])) for k, v in pot.items() if p in v},
+                        's': signal})
     targets.sort(key=lambda t: -sum(t['p'].values()))
 
     data = {
         'meta': {'periode': 'April–September 2020', 'baris': len(df), 'sku': int(df['KODEBARA'].nunique()),
                  'pelanggan': int(df['PELANGGAN'].nunique()), 'omzet': total, 'omzet_bulan': total / N_BULAN,
                  'harga_nol': int((df['HARGA'] <= 0).sum()),
+                 'harga_nol_qty': int(df.loc[df['HARGA'] <= 0, 'QTY'].sum()),
+                 'potongan_baris': int((selisih_bruto_bersih > 1).sum()),
+                 'potongan_tersirat': int(selisih_bruto_bersih.sum()),
                  'selisih': int(((df['QTY'] * df['HARGA'] - df['JUMLAH']).abs() > 1).sum())},
         'monthly': monthly,
+        'category_mix': category_mix,
+        'basket': {'n': len(basket_df), 'median': float(basket_df['o'].median()),
+                   'otak_n': len(with_otak), 'otak_ikan_n': len(with_otak_ikan),
+                   'otak_ikan_share': float(len(with_otak_ikan) / len(with_otak)),
+                   'pairs': [{'a': a, 'b': b, 'n': n} for (a, b), n in top_pairs],
+                   'monthly': basket_monthly},
         'otak': {'share': float(otak['JUMLAH'].sum() / total), 'minaku_share': float(minaku_share),
                  'agu_baru': [{'n': k, 'o': int(v)} for k, v in agu_baru.items()],
                  'pembeli': int(nc.loc[nc['JENIS'] == 'Otak-Otak', 'PELANGGAN'].nunique())},
@@ -251,6 +313,10 @@ def main():
     print(f'Baris {len(df):,} | omzet {jt(total)} | pelanggan {data["meta"]["pelanggan"]} | rutin {len(rutin)}')
     for mo in monthly:
         print(f"  {mo['m']}: total {jt(mo['tot'])} | otak {jt(mo['otak'])} | lain {jt(mo['lain'])}")
+    print('Lima jenis produk terbesar:', f"{sum(x['o'] for x in category_mix[:5]) / total:.1%} omzet")
+    print('Keranjang pelanggan-hari rutin:', data['basket']['n'], '| median', jt(data['basket']['median']),
+          '| Otak-Otak + olahan ikan',
+          f"{data['basket']['otak_ikan_n']}/{data['basket']['otak_n']} ({data['basket']['otak_ikan_share']:.1%})")
     print('Segmen:', [(s['label'], s['n'], f"{s['share']:.1%}") for s in seg], '| baru Mei–Sep', baru)
     print('Otak-Otak share', f"{data['otak']['share']:.1%}", '| Agustus baru', data['otak']['agu_baru'])
     print('P1', data['p1'])

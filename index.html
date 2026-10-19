@@ -6,7 +6,7 @@
   <title>Peluang Upselling Frozen Food</title>
   <meta name="description" content="Dashboard analisis penjualan frozen food April–September 2020: tiga ide upselling untuk pelanggan rutin, disusun untuk Divisi Pemasaran.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a78d6'/%3E%3Cpath d='M8 22h4v-6H8zm6 0h4V10h-4zm6 0h4v-9h-4z' fill='%23fff'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="dashboard/assets/style.css?v=4">
+  <link rel="stylesheet" href="dashboard/assets/style.css?v=5">
 </head>
 <body>
 
@@ -17,10 +17,11 @@
       <a href="#s1">1 Omzet</a>
       <a href="#s2">2 Pelanggan</a>
       <a href="#s3">3 Produk</a>
-      <a href="#s4">4 Program</a>
-      <a href="#s5">5 Potensi</a>
-      <a href="#s6">6 Target</a>
-      <a href="#s7">7 Keputusan</a>
+      <a href="#s4">4 Keranjang</a>
+      <a href="#s5">5 Program</a>
+      <a href="#s6">6 Potensi</a>
+      <a href="#s7">7 Target</a>
+      <a href="#s8">8 Keputusan</a>
     </nav>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="Ganti tema terang/gelap">Tema</button>
   </div>
@@ -30,20 +31,21 @@
   <!-- ===================== PEMBUKA: Big Idea ===================== -->
   <div class="wrap hero">
     <p class="eyebrow">Analisis penjualan · <span data-b="periode">April–September 2020</span> · untuk Divisi Pemasaran</p>
-    <h1>Tumbuh dari pelanggan yang sudah ada: tiga ide upselling</h1>
+    <h1>Tumbuh dari pelanggan rutin: tiga program upselling yang terukur</h1>
     <p class="bigidea">
       Omzet kita naik-turun mengikuti satu jenis produk, <b>Otak-Otak (<span data-b="otak_share">22%</span> omzet)</b>,
-      dan pelanggan baru hanya menyumbang <b data-b="baru_share">12%</b> omzet sejak Mei.
-      Cara tercepat untuk tumbuh adalah <span class="key">menjual lebih banyak ke <span data-b="rutin_n">98</span> pelanggan rutin</span>
-      lewat tiga program upselling, dengan potensi tambahan hingga <b data-b="pot_full_bln">Rp24,6 jt per bulan</b>.
+      sementara <b><span data-b="rutin_n">98</span> pelanggan rutin menyumbang <span data-b="rutin_share">87%</span> omzet</b>.
+      Kami mengusulkan tiga cara untuk <span class="key">menambah nilai belanja mereka</span>,
+      dengan potensi tambahan hingga <b data-b="pot_full_bln">Rp24,6 jt per bulan</b>.
       Kami meminta persetujuan Pemasaran untuk <b>pilot 3 bulan pada <span data-b="pilot_n">20</span> pelanggan prioritas</b>.
     </p>
+    <p class="data-age"><b>Periode data:</b> April–September 2020. Angka ini memberi gambaran historis, bukan kondisi penjualan saat ini.</p>
 
     <div class="kpis">
       <div class="kpi">
         <p class="lbl">Omzet April–September</p>
         <p class="val" data-b="omzet">Rp4,53 M</p>
-        <p class="sub">rata-rata <span data-b="omzet_bulan">Rp755 jt</span> per bulan · <span data-b="baris">6.778</span> transaksi</p>
+        <p class="sub">rata-rata <span data-b="omzet_bulan">Rp755 jt</span> per bulan · <span data-b="baris">6.778</span> baris penjualan</p>
       </div>
       <div class="kpi">
         <p class="lbl">Porsi omzet dari pelanggan rutin</p>
@@ -61,12 +63,13 @@
       <h2>Yang akan kita bahas</h2>
       <ol>
         <li><a href="#s1">Omzet naik-turun mengikuti Otak-Otak</a></li>
-        <li><a href="#s2">Pelanggan rutin adalah mesin omzet, bukan pelanggan baru</a></li>
+        <li><a href="#s2">Pelanggan rutin menyumbang 87% omzet</a></li>
         <li><a href="#s3">Es krim sering dibeli ulang, tetapi belum merata</a></li>
-        <li><a href="#s4">Tiga program upselling</a></li>
-        <li><a href="#s5">Berapa potensinya</a></li>
-        <li><a href="#s6">Siapa yang dihubungi lebih dulu</a></li>
-        <li><a href="#s7">Keputusan: pilot 3 bulan untuk 20 pelanggan prioritas</a></li>
+        <li><a href="#s4">Keranjang harian menunjukkan pasangan produk</a></li>
+        <li><a href="#s5">Tiga program upselling</a></li>
+        <li><a href="#s6">Berapa potensinya</a></li>
+        <li><a href="#s7">Siapa yang dihubungi lebih dulu</a></li>
+        <li><a href="#s8">Keputusan: pilot 3 bulan untuk 20 pelanggan prioritas</a></li>
       </ol>
     </nav>
   </div>
@@ -78,6 +81,7 @@
       <h2 class="title">Omzet naik <span data-b="naik">45%</span> hingga Agustus, lalu turun <span data-b="turun">15%</span> di September. Naik-turunnya mengikuti Otak-Otak.</h2>
     </div>
     <div class="grid-2">
+      <div class="chart-stack">
       <figure class="card" style="margin:0">
         <div class="card-head">
           <div>
@@ -90,6 +94,18 @@
         <div class="chart" id="c1" role="img" aria-label="Grafik batang bertumpuk omzet bulanan April sampai September 2020, dipisah Otak-Otak dan produk lain"></div>
         <div class="tbl-wrap" id="c1-tbl" hidden></div>
       </figure>
+      <figure class="card" style="margin:0">
+        <div class="card-head">
+          <div>
+            <h3>Lima kelompok produk menyumbang <span data-b="cat_top5">73%</span> omzet</h3>
+            <p class="cap">porsi omzet April–September · oranye menyorot Otak-Otak</p>
+          </div>
+          <button class="tbl-toggle" data-for="c1mix" type="button">Lihat tabel</button>
+        </div>
+        <div class="chart" id="c1mix" role="img" aria-label="Batang horizontal porsi omzet lima jenis produk teratas dan gabungan jenis lainnya"></div>
+        <div class="tbl-wrap" id="c1mix-tbl" hidden></div>
+      </figure>
+      </div>
       <div class="sowhat">
         <p class="big"><span data-b="sep_turun">−Rp136 jt</span></p>
         <p>Penurunan omzet September. Seluruhnya berasal dari <span class="key-alert">Otak-Otak (<span data-b="otak_turun">−Rp163 jt</span>)</span>; produk lain justru naik <b data-b="lain_naik">Rp27 jt</b>.</p>
@@ -155,11 +171,52 @@
     </div>
   </section>
 
-  <!-- ===================== 4. Tiga program ===================== -->
+  <!-- ===================== 4. Bukti keranjang ===================== -->
   <section class="story wrap" id="s4">
     <div class="sec-head">
-      <p class="sec-no">4 · Rekomendasi</p>
-      <h2 class="title">Tiga program upselling untuk pelanggan rutin</h2>
+      <p class="sec-no">4 · Bukti keranjang</p>
+      <h2 class="title">Pada <span data-b="basket_otak_ikan_pct">42%</span> hari belanja rutin yang memuat Otak-Otak, pelanggan juga membeli olahan ikan.</h2>
+      <p class="lead">Data mencakup <span data-b="basket_n">1.221</span> kombinasi pelanggan-tanggal. Median belanja per pelanggan per hari adalah <span data-b="basket_median">Rp1,4 jt</span>.</p>
+    </div>
+    <div class="grid-2">
+      <figure class="card" style="margin:0">
+        <div class="card-head">
+          <div>
+            <h3>Pasangan jenis produk yang sering muncul bersama</h3>
+            <p class="cap">jumlah hari belanja yang memuat pasangan · biru menyorot Program 2</p>
+          </div>
+          <button class="tbl-toggle" data-for="bPair" type="button">Lihat tabel</button>
+        </div>
+        <div class="chart" id="bPair" role="img" aria-label="Batang horizontal jumlah keranjang harian pelanggan rutin yang memuat pasangan jenis produk"></div>
+        <div class="tbl-wrap" id="bPair-tbl" hidden></div>
+      </figure>
+      <div class="chart-stack">
+        <div class="sowhat">
+          <p class="big"><span data-b="basket_otak_ikan_n">137</span> dari <span data-b="basket_otak_n">329</span> hari belanja</p>
+          <p>Di hari ketika pelanggan rutin membeli Otak-Otak, <b><span data-b="basket_otak_ikan_pct">42%</span></b> juga membeli bakso ikan atau olahan ikan lain.</p>
+          <p class="note">Ini pola belanja bersamaan, bukan bukti bahwa satu produk mendorong pembelian produk lain.</p>
+        </div>
+        <figure class="card" style="margin:0">
+          <div class="card-head">
+            <div>
+              <h3>Median nilai belanja per pelanggan per hari</h3>
+              <p class="cap">juta rupiah · pelanggan rutin · April–September 2020</p>
+            </div>
+            <button class="tbl-toggle" data-for="bMedian" type="button">Lihat tabel</button>
+          </div>
+          <div class="chart" id="bMedian" role="img" aria-label="Grafik garis median nilai belanja harian per pelanggan rutin pada April sampai September 2020"></div>
+          <div class="tbl-wrap" id="bMedian-tbl" hidden></div>
+        </figure>
+      </div>
+    </div>
+    <p class="small" style="margin:12px 0 0">Keranjang harian adalah perkiraan dari transaksi pelanggan yang sama pada tanggal yang sama; file sumber tidak memiliki nomor nota, sehingga beberapa nota satu pelanggan di hari yang sama dapat tergabung.</p>
+  </section>
+
+  <!-- ===================== 5. Tiga program ===================== -->
+  <section class="story wrap" id="s5">
+    <div class="sec-head">
+      <p class="sec-no">5 · Rekomendasi</p>
+      <h2 class="title">Tiga program upselling mengisi celah produk dan jumlah beli</h2>
       <p class="lead">Upselling di sini berarti menaikkan nilai belanja pelanggan yang sudah ada: menambah produk pelengkap ke keranjangnya, dan menaikkan jumlah belinya ke satuan dus.</p>
     </div>
     <div class="programs">
@@ -201,10 +258,10 @@
     </div>
   </section>
 
-  <!-- ===================== 5. Potensi ===================== -->
-  <section class="story wrap" id="s5">
+  <!-- ===================== 6. Potensi ===================== -->
+  <section class="story wrap" id="s6">
     <div class="sec-head">
-      <p class="sec-no">5 · Potensi</p>
+      <p class="sec-no">6 · Potensi</p>
       <h2 class="title">Potensi tambahan hingga <span data-b="pot_full">Rp24,6 jt</span> per bulan. Geser asumsinya untuk melihat skenario.</h2>
     </div>
     <div class="card calc">
@@ -230,10 +287,10 @@
     </div>
   </section>
 
-  <!-- ===================== 6. Daftar target ===================== -->
-  <section class="story wrap" id="s6">
+  <!-- ===================== 7. Daftar target ===================== -->
+  <section class="story wrap" id="s7">
     <div class="sec-head">
-      <p class="sec-no">6 · Siapa dulu</p>
+      <p class="sec-no">7 · Siapa dulu</p>
       <h2 class="title">Mulai dari 20 pelanggan teratas: mereka memegang <span data-b="top20">64%</span> potensi.</h2>
       <p class="lead">Daftar <span data-b="target_n">89</span> pelanggan rutin yang cocok untuk minimal satu program, diurutkan dari potensi terbesar. Beberapa pelanggan cocok untuk lebih dari satu program, jadi satu kunjungan sales bisa membawa dua penawaran.</p>
     </div>
@@ -247,7 +304,7 @@
               <th>Pelanggan</th>
               <th class="n hide-sm">Belanja / bulan</th>
               <th class="n hide-sm">Bulan aktif</th>
-              <th>Program</th>
+              <th>Peluang &amp; alasan</th>
               <th class="n">Potensi penuh / bulan</th>
             </tr>
           </thead>
@@ -255,14 +312,14 @@
         </table>
       </div>
       <button class="chip more" id="tMore" type="button">Tampilkan semua</button>
-      <p class="small" style="margin:12px 0 0">Belanja / bulan = rata-rata April–September. Potensi per pelanggan memakai rumus yang sama dengan bagian 5.</p>
+      <p class="small" style="margin:12px 0 0">Belanja / bulan = rata-rata April–September. Alasan target merujuk ke pola pembelian pada periode yang sama. Potensi memakai rumus bagian 6.</p>
     </div>
   </section>
 
-  <!-- ===================== 7. Keputusan ===================== -->
-  <section class="story wrap" id="s7">
+  <!-- ===================== 8. Keputusan ===================== -->
+  <section class="story wrap" id="s8">
     <div class="sec-head">
-      <p class="sec-no">7 · Keputusan</p>
+      <p class="sec-no">8 · Keputusan</p>
       <h2 class="title">Keputusan hari ini: setujui pilot 3 bulan untuk <span data-b="pilot_n">20</span> pelanggan prioritas.</h2>
     </div>
 
@@ -270,7 +327,7 @@
       <div class="card decision">
         <p class="decision-lbl">Yang kami minta dari Divisi Pemasaran</p>
         <p class="decision-ask">Setujui pilot 3 bulan</p>
-        <p class="decision-sub">Untuk <b><span data-b="pilot_n">20</span> pelanggan teratas</b> di bagian 6. Mereka memegang <b data-b="top20">64%</b> potensi
+        <p class="decision-sub">Untuk <b><span data-b="pilot_n">20</span> pelanggan teratas</b> di bagian 7. Mereka memegang <b data-b="top20">64%</b> potensi
           (<span data-b="pilot_full">Rp15,8 jt</span> / bulan), dan <span data-b="pilot_multi">14</span> di antaranya cocok untuk lebih dari satu program.</p>
         <p class="decision-lbl" style="margin-top:18px">Yang perlu disiapkan Pemasaran</p>
         <ol class="prep">
@@ -333,8 +390,10 @@
     <ul>
       <li><b>Sumber:</b> 6 file Excel laporan penjualan April–September 2020. Hanya sheet laporan lengkap (diawali “_”) yang dipakai agar tidak terhitung dua kali dengan sheet per merek; total setiap file dicocokkan dengan baris total di Excel. Hasilnya <span data-b="baris">6.778</span> baris, <span data-b="sku">268</span> produk, <span data-b="pelanggan">183</span> pelanggan.</li>
       <li><b>Nama pelanggan</b> dibersihkan dari kode awalan (“F - ”, “C - ”, “AL - ”, …) dan tulisan “(MITRAKU)”, sehingga misalnya “C - ADEK FROZEN” dan “ADEK FROZEN” dihitung satu pelanggan. Pembeli “CASH” tidak dihitung sebagai pelanggan rutin.</li>
-      <li><b>Nilai penjualan</b> memakai kolom JUMLAH (sudah termasuk potongan). Ada <span data-b="harga_nol">58</span> baris berharga Rp0 dan <span data-b="selisih">77</span> baris dengan JUMLAH ≠ QTY × HARGA (potongan harga).</li>
+      <li><b>Nilai penjualan</b> memakai kolom JUMLAH (sudah termasuk potongan). Ada <span data-b="harga_nol">58</span> baris HARGA Rp0 dengan total <span data-b="harga_nol_qty">531</span> unit, serta <span data-b="potongan_baris">77</span> baris dengan JUMLAH di bawah QTY × HARGA (selisih tersirat <span data-b="potongan_tersirat">Rp4,4 jt</span>). Selisih ini tidak memiliki kode promo, jadi bukan bukti dampak kampanye.</li>
       <li><b>Jenis produk</b> dikelompokkan dari kata kunci nama barang menjadi 13 jenis. <b>Dibeli ulang</b> = pembeli jenis itu membelinya di ≥ 2 bulan berbeda.</li>
+      <li><b>Keranjang harian:</b> transaksi pelanggan rutin pada tanggal yang sama dikelompokkan sebagai satu keranjang perkiraan; tanpa nomor nota, beberapa nota pada satu hari dapat tergabung. Pasangan produk menunjukkan frekuensi muncul bersama, bukan sebab-akibat.</li>
+      <li><b>Nilai median keranjang</b> dihitung dari total belanja pelanggan rutin per hari pada tiap bulan, sehingga tidak terlalu dipengaruhi pesanan yang sangat besar.</li>
       <li><b>Potensi Program 1:</b> <span data-b="p1_porsi">4,2%</span> × belanja bulanan pelanggan target; 4,2% adalah median porsi es krim pada <span data-b="p1_campur">20</span> toko rutin yang menjual es krim bersama produk lain.</li>
       <li><b>Potensi Program 2:</b> <span data-b="p2_asumsi">10%</span> × belanja Otak-Otak bulanan pelanggan target (asumsi konservatif; median pelanggan lain <span data-b="p2_peer_pct">91%</span>). Target = pembeli Otak-Otak rutin yang belanja bakso ikan/olahan ikan lainnya &lt; 10% dari belanja Otak-Otaknya.</li>
       <li><b>Potensi Program 3:</b> (isi dus − jumlah pack yang dibeli dalam sebulan) × harga pack yang dibayar, untuk pembelian eceran 50–99% isi dus, dibagi 6 bulan. Angka ini sebelum biaya diskon/bonus dus.</li>
@@ -347,13 +406,13 @@
 
 <div class="pager" id="pager" aria-label="Pindah bagian" title="Pindah bagian: tombol ← → atau PageUp/PageDown">
   <button type="button" data-go="-1" aria-label="Bagian sebelumnya">‹</button>
-  <span id="pagerTxt">Pembuka · 7 bagian</span>
+  <span id="pagerTxt">Pembuka · 8 bagian</span>
   <button type="button" data-go="1" aria-label="Bagian berikutnya">›</button>
 </div>
 
 <div class="tip" id="tip" role="status" aria-live="polite"></div>
 
-<script src="dashboard/assets/data.js?v=2"></script>
-<script src="dashboard/assets/app.js?v=7"></script>
+<script src="dashboard/assets/data.js?v=3"></script>
+<script src="dashboard/assets/app.js?v=8"></script>
 </body>
 </html>

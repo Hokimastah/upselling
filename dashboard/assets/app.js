@@ -33,6 +33,7 @@
   const top20 = pilotFull / tTotal;
   const seg = Object.fromEntries(D.segmen.map(s => [s.k, s]));
   const aguBaru = D.otak.agu_baru;
+  const catTop5 = D.category_mix.slice(0, 5).reduce((s, x) => s + x.o, 0) / D.meta.omzet;
 
   const B = {
     periode: D.meta.periode,
@@ -40,6 +41,8 @@
     omzet_bulan: rp(D.meta.omzet_bulan),
     baris: num(D.meta.baris), sku: num(D.meta.sku), pelanggan: num(D.meta.pelanggan),
     harga_nol: num(D.meta.harga_nol), selisih: num(D.meta.selisih),
+    harga_nol_qty: num(D.meta.harga_nol_qty), potongan_baris: num(D.meta.potongan_baris),
+    potongan_tersirat: rp(D.meta.potongan_tersirat),
     otak_share: pct(D.otak.share), minaku_share: pct(D.otak.minaku_share),
     naik: pct(byM.Agu.tot / byM.Apr.tot - 1), turun: pct(1 - byM.Sep.tot / byM.Agu.tot),
     sep_turun: rp(byM.Sep.tot - byM.Agu.tot), otak_turun: rp(byM.Sep.otak - byM.Agu.otak),
@@ -49,6 +52,11 @@
     rutin_n: num(seg.rutin.n), rutin_share: pct(seg.rutin.share),
     baru_n: num(D.baru.n), baru_share: pct(D.baru.share),
     baru_rata: '± ' + Math.round(D.baru.n / D.baru.per_bulan.length),
+    cat_top5: pct(catTop5),
+    basket_n: num(D.basket.n), basket_median: rp(D.basket.median),
+    basket_apr: rp(D.basket.monthly[0].median), basket_sep: rp(D.basket.monthly[D.basket.monthly.length - 1].median),
+    basket_otak_n: num(D.basket.otak_n), basket_otak_ikan_n: num(D.basket.otak_ikan_n),
+    basket_otak_ikan_pct: pct(D.basket.otak_ikan_share),
     p1_targets: num(D.p1.targets), p1_buyers: num(D.p1.buyers), p1_pen: pct(D.p1.pen), p1_rep: pct(D.p1.rep),
     p1_khusus: num(D.p1.khusus), p1_campur: num(D.p1.campur), p1_rep_campur: pct(D.p1.rep_campur),
     p1_porsi: pct(D.p1.porsi, 1),
@@ -192,6 +200,24 @@
     table('c1', ['Bulan', 'Otak-Otak', 'Produk lain', 'Total'], M.map(d => [d.m, rp(d.otak), rp(d.lain), rp(d.tot)]));
   }
 
+  /* ================= C1b: konsentrasi omzet per jenis produk ================= */
+  function drawC1mix(box) {
+    const W = Math.max(300, box.clientWidth), rows = D.category_mix.slice(0, 5);
+    const other = D.category_mix.slice(5).reduce((a, x) => ({ o: a.o + x.o, share: a.share + x.share }), { o: 0, share: 0 });
+    rows.push({ j: 'Kelompok lain', ...other });
+    const rowH = 34, H = rows.length * rowH + 4, m = { l: 124, r: 108, t: 4 };
+    const svg = svgIn(box, W, H), pw = Math.max(50, W - m.l - m.r), max = Math.max(...rows.map(x => x.share));
+    rows.forEach((x, i) => {
+      const y = m.t + i * rowH, g = el('g', {}, svg), w = x.share / max * pw;
+      el('rect', { class: 'hit', x: 0, y, width: W, height: rowH - 2, style: 'fill:transparent' }, g);
+      el('text', { x: m.l - 8, y: y + 20, 'text-anchor': 'end', class: i === 0 ? 'lbl-ink' : 'lbl-2', style: 'font-size:11.5px', text: x.j }, g);
+      el('path', { d: rowPath(m.l, y + 6, Math.max(2, w), 18), style: fill(i === 0 ? 'var(--alert)' : 'var(--context)') }, g);
+      el('text', { x: W - 2, y: y + 20, 'text-anchor': 'end', class: i === 0 ? 'lbl-ink' : 'lbl-2', style: 'font-size:11.5px', text: `${pct(x.share)} · ${rp(x.o)}` }, g);
+      hover(g, svg, () => ({ h: x.j, r: [{ c: i === 0 ? 'var(--alert)' : 'var(--context)', v: pct(x.share, 1), l: 'dari omzet' }, { v: rp(x.o), l: 'omzet Apr–Sep 2020' }] }));
+    });
+    table('c1mix', ['Jenis produk', 'Omzet', 'Porsi'], rows.map(x => [x.j, rp(x.o), pct(x.share, 1)]));
+  }
+
   /* ================= C2: porsi omzet per kelompok pelanggan ================= */
   function drawC2(box) {
     const W = Math.max(300, box.clientWidth), rowH = 62, H = D.segmen.length * rowH + 4;
@@ -256,6 +282,52 @@
     });
     table('c3', ['Jenis produk', 'Pembeli', 'Pelanggan rutin membeli', 'Dibeli ulang', 'Omzet'],
       D.types.map(t => [t.j, num(t.buyers), pct(t.pen), pct(t.rep), rp(t.o)]));
+  }
+
+  /* ================= C4: pola pasangan produk di keranjang harian ================= */
+  function drawBasketPairs(box) {
+    const W = Math.max(300, box.clientWidth), pairs = D.basket.pairs;
+    const rowH = 36, H = pairs.length * rowH + 4, m = { l: 145, r: 38, t: 4 };
+    const svg = svgIn(box, W, H), pw = Math.max(45, W - m.l - m.r), max = Math.max(...pairs.map(x => x.n));
+    const short = x => {
+      if (x.a === 'Olahan Ikan' && x.b === 'Otak-Otak') return 'Otak-Otak + Ikan';
+      const a = x.a === 'Kentang Goreng' ? 'Kentang' : x.a;
+      const b = x.b === 'Kentang Goreng' ? 'Kentang' : x.b === 'Olahan Ikan' ? 'Ikan' : x.b;
+      return `${a} + ${b}`;
+    };
+    pairs.forEach((x, i) => {
+      const y = m.t + i * rowH, g = el('g', {}, svg), focus = x.a === 'Olahan Ikan' && x.b === 'Otak-Otak';
+      const w = x.n / max * pw;
+      el('rect', { class: 'hit', x: 0, y, width: W, height: rowH - 2, style: 'fill:transparent' }, g);
+      el('text', { x: m.l - 8, y: y + 21, 'text-anchor': 'end', class: focus ? 'lbl-ink' : 'lbl-2', style: 'font-size:11.5px', text: short(x) }, g);
+      el('path', { d: rowPath(m.l, y + 7, Math.max(2, w), 18), style: fill(focus ? 'var(--accent)' : 'var(--context)') }, g);
+      el('text', { x: W - 3, y: y + 21, 'text-anchor': 'end', class: focus ? 'lbl-ink' : 'lbl-2', style: 'font-size:11.5px', text: num(x.n) }, g);
+      hover(g, svg, () => ({ h: `${x.a} + ${x.b}`, r: [{ c: focus ? 'var(--accent)' : 'var(--context)', v: num(x.n), l: 'keranjang pelanggan-hari' }] }));
+    });
+    table('bPair', ['Pasangan jenis produk', 'Hari belanja pelanggan'], pairs.map(x => [`${x.a} + ${x.b}`, num(x.n)]));
+  }
+
+  /* ================= C4b: nilai median keranjang harian ================= */
+  function drawBasketMedian(box) {
+    const W = Math.max(300, box.clientWidth), H = 248, m = { l: 48, r: 12, t: 28, b: 30 };
+    const rows = D.basket.monthly, svg = svgIn(box, W, H), pw = W - m.l - m.r, ph = H - m.t - m.b;
+    const lo = 1e6, hi = 1.8e6, y = v => m.t + ph - (v - lo) / (hi - lo) * ph;
+    [1e6, 1.4e6, 1.8e6].forEach(v => {
+      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), style: `stroke:${v === lo ? 'var(--axis)' : 'var(--grid)'}`, 'stroke-width': 1 }, svg);
+      el('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', class: 'tick', style: 'font-size:10px', text: dec(v / 1e6, 1) }, svg);
+    });
+    const band = pw / rows.length;
+    const pts = rows.map((x, i) => [m.l + band * i + band / 2, y(x.median)]);
+    el('path', { d: pts.map((p, i) => `${i ? 'L' : 'M'}${p[0]},${p[1]}`).join(' '), style: 'fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round' }, svg);
+    rows.forEach((x, i) => {
+      const [cx, cy] = pts[i], g = el('g', {}, svg);
+      el('circle', { class: 'hit', cx, cy, r: 12, style: 'fill:transparent' }, g);
+      el('circle', { cx, cy, r: 4.5, style: fill('var(--accent)') }, g);
+      el('text', { x: cx, y: cy - 12, 'text-anchor': 'middle', class: 'lbl-ink', style: 'font-size:10.5px', text: dec(x.median / 1e6, 1) }, g);
+      el('text', { x: cx, y: H - 8, 'text-anchor': 'middle', class: 'tick', text: x.m }, g);
+      hover(g, svg, () => ({ h: x.m + ' 2020', r: [{ c: 'var(--accent)', v: rp(x.median), l: 'median per pelanggan per hari' }, { v: `${num(x.n)} hari belanja pelanggan`, l: 'dengan transaksi' }] }));
+    });
+    table('bMedian', ['Bulan', 'Hari belanja pelanggan', 'Median belanja'], rows.map(x => [x.m, num(x.n), rp(x.median)]));
   }
 
   /* ================= M1: es krim sudah vs belum ================= */
@@ -340,6 +412,13 @@
 
   /* ================= Tabel pelanggan target ================= */
   const PILL = { 1: '1 · Es Krim', 2: '2 · Paket Ikan', 3: '3 · Dus' };
+  function signalText(t, k) {
+    const s = t.s && t.s[k];
+    if (k === '1') return 'Belum membeli es krim selama Apr–Sep 2020';
+    if (k === '2') return `Olahan ikan ${pct(s.fish_ratio, 1)} dari belanja Otak-Otak`;
+    if (k === '3') return `${num(s.near_events)} kejadian produk-bulan pada 50–99% isi dus`;
+    return '';
+  }
   let filt = 'all', showAll = false;
   const fBox = document.getElementById('tFilters');
   [['all', `Semua (${D.targets.length})`], ...[1, 2, 3].map(k => [String(k), `${PILL[k]} (${D.targets.filter(t => t.p[k]).length})`])]
@@ -362,7 +441,13 @@
       if (pilotSet.has(t.n)) { const s = document.createElement('span'); s.className = 'pilot-tag'; s.textContent = 'pilot'; nc.appendChild(s); }
       td(rp(t.pm), 'n hide-sm'); td(`${t.m} / 6`, 'n hide-sm');
       const pc = td(null);
-      Object.keys(t.p).forEach(k => { const s = document.createElement('span'); s.className = 'pill'; s.textContent = PILL[k]; pc.appendChild(s); });
+      pc.className = 'program-cell';
+      Object.keys(t.p).forEach(k => {
+        const item = document.createElement('div'); item.className = 'program-signal';
+        const s = document.createElement('span'); s.className = 'pill'; s.textContent = PILL[k];
+        const why = document.createElement('small'); why.textContent = signalText(t, k);
+        item.append(s, why); pc.appendChild(item);
+      });
       const vc = td(null, 'n'), wrap = document.createElement('div'); wrap.className = 'bar-cell';
       const bar = document.createElement('i'); bar.style.width = Math.max(2, val(t) / max * 70) + 'px';
       const v = document.createElement('span'); v.textContent = rp(val(t));
@@ -378,7 +463,8 @@
   renderTable();
 
   /* ---------------- Render + responsif ---------------- */
-  const charts = { c1: drawC1, c2: drawC2, c3: drawC3, m1: drawM1, m2: drawM2, m3: drawM3, c5: drawC5 };
+  const charts = { c1: drawC1, c1mix: drawC1mix, c2: drawC2, c3: drawC3, bPair: drawBasketPairs,
+    bMedian: drawBasketMedian, m1: drawM1, m2: drawM2, m3: drawM3, c5: drawC5 };
   Object.entries(charts).forEach(([id, fn]) => {
     const box = document.getElementById(id);
     let lastW = 0, raf = 0;
